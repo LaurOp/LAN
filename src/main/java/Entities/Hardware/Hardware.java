@@ -1,4 +1,4 @@
-package Hardware;
+package Entities.Hardware;
 
 import java.util.ArrayList;
 import java.util.HashSet;

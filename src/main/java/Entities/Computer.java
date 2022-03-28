@@ -1,5 +1,7 @@
-import Hardware.Hardware;
-import Software.Software;
+package Entities;
+
+import Entities.Hardware.Hardware;
+import Entities.Software.Software;
 
 public class Computer {
 

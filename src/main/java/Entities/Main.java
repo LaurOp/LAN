@@ -1,6 +1,8 @@
-import Hardware.Hardware;
-import Hardware.NetworkAdapter;
-import Hardware.GraphicsCard;
+package Entities;
+
+import Entities.Hardware.GraphicsCard;
+import Entities.Hardware.Hardware;
+import Entities.Hardware.NetworkAdapter;
 import org.testng.annotations.Test;
 
 public class Main {
