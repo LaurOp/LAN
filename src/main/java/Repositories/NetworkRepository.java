@@ -11,6 +11,14 @@ public class NetworkRepository implements GenericRepository<Network> {
 
     private Network[] server = new Network[20];
 
+    public Network[] getServer() {
+        return server;
+    }
+
+    public void setServer(Network[] server) {
+        this.server = server;
+    }
+
     @Override
     public void add(Network entity) {
 
@@ -31,6 +39,15 @@ public class NetworkRepository implements GenericRepository<Network> {
     @Override
     public Network get(int id) {
         return server[id];
+    }
+
+    public int getIndex(Network entity) throws Exception {
+        for (int i=0; i<server.length; i++) {
+            if (server[i] == entity) {
+                return i;
+            }
+        }
+        throw new Exception();
     }
 
     @Override

@@ -3,8 +3,21 @@ package Entities;
 import java.util.ArrayList;
 
 public class Network {
-
+    private int ID;
     private ArrayList<Computer> computers = new ArrayList<>();
+
+    static int counter;
+    static{
+        counter = 0;
+    }
+
+    {
+        ID = counter++;
+    }
+
+    public int getID() {
+        return ID;
+    }
 
     public Network() {
     }
