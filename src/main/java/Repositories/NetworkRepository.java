@@ -57,4 +57,14 @@ public class NetworkRepository implements GenericRepository<Network> {
     public int getSize() {
         return server.length;
     }
+
+    @Override
+    public boolean isIn(Network entity) {
+        for (int i = 0; i < server.length; i++)
+            if (server[i] == entity) {
+                return true;
+            }
+
+        return false;
+    }
 }

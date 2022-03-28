@@ -12,4 +12,5 @@ public interface GenericRepository<T> {
 
     public int getSize();
 
+    public boolean isIn(T entity);
 }

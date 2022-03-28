@@ -1,5 +1,7 @@
 package Entities.Hardware;
 
+import Services.ConnectableService;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -11,6 +13,20 @@ public class Switch implements Connectable {
     private String brand;
     private boolean gigabitEthernet;
     private List<String> connectedTo;
+
+    private ConnectableService service = new ConnectableService();
+
+    public List<String> getConnectedTo() {
+        return connectedTo;
+    }
+
+    public void setConnectedTo(List<String> connectedTo) {
+        this.connectedTo = connectedTo;
+    }
+
+    public String getIP() {
+        return IP;
+    }
 
     {
         Random r = new Random();
@@ -30,45 +46,23 @@ public class Switch implements Connectable {
     }
 
     @Override
-    public List<Integer> getFreePorts() {
-        List<Integer> rez = new ArrayList<>();
-
-        for(int i = 0; i<24-this.connectedTo.size(); i++){
-            rez.add(i);
-        }
-
-        return rez;
+    public List<Integer> getFreePorts() {   //hardcoded since I have constant nr of ports
+        return service.getFreePorts(this);
     }
 
     @Override
     public boolean checkIfOnline() {
-        if (this.IP.equals("")){return false;}
-
-        if (this.connectedTo.size() == 0){
-            return false;
-        }
-
-        return true;
+        return service.checkIfOnline(this);
     }
 
     @Override
-    public void disconnectPort(int port) {
-        this.connectedTo.remove(port);
+    public void disconnectPort(int port) {  //0 indexed
+        service.disconnectPort(this, port);
     }
 
     @Override
     public Integer ping(String ip) {
-        if (this.connectedTo.size() == 0){
-            return -2;
-        }
-
-        for(String con : connectedTo){
-            if (con.equals(ip)){
-                return 0;
-            }
-        }
-
-        return -1;
+        return service.ping(this, ip);
     }
 
 }

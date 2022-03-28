@@ -1,6 +1,9 @@
 package Repositories;
 
 import Entities.Computer;
+import Entities.Hardware.Connectable;
+import Entities.Hardware.Printer;
+import Entities.Hardware.Switch;
 import Entities.Network;
 
 import java.util.Arrays;
@@ -12,7 +15,7 @@ public class ComputerRepository implements GenericRepository<Computer> {
     @Override
     public void add(Computer entity) {
 
-        for (int i=0; i<computers.length; i++) {
+        for (int i = 0; i < computers.length; i++) {
             if (computers[i] == null) {
                 computers[i] = entity;
                 return;
@@ -20,7 +23,7 @@ public class ComputerRepository implements GenericRepository<Computer> {
         }
 
         // increase capacity
-        Computer[] newStorage = Arrays.<Computer, Computer>copyOf(computers, 10+computers.length, Computer[].class);
+        Computer[] newStorage = Arrays.<Computer, Computer>copyOf(computers, 10 + computers.length, Computer[].class);
 
         newStorage[computers.length] = entity;
         computers = newStorage;
@@ -33,7 +36,7 @@ public class ComputerRepository implements GenericRepository<Computer> {
 
     @Override
     public void update(Computer entity, Computer newEntity) {
-        for (int i=0; i<computers.length; i++) {
+        for (int i = 0; i < computers.length; i++) {
             if (computers[i] == entity) {
                 computers[i] = newEntity;
                 return;
@@ -43,7 +46,7 @@ public class ComputerRepository implements GenericRepository<Computer> {
 
     @Override
     public void delete(Computer entity) {
-        for (int i=0; i<computers.length; i++) {
+        for (int i = 0; i < computers.length; i++) {
             if (computers[i].equals(entity)) {
                 computers[i] = null;
                 return;
@@ -54,5 +57,16 @@ public class ComputerRepository implements GenericRepository<Computer> {
     @Override
     public int getSize() {
         return computers.length;
+    }
+
+    @Override
+    public boolean isIn(Computer entity) {
+        for (int i = 0; i < computers.length; i++)
+            if (computers[i] == entity) {
+                return true;
+            }
+
+            return false;
+
     }
 }

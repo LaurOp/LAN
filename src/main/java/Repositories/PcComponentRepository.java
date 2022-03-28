@@ -1,12 +1,12 @@
 package Repositories;
 
-import Entities.Hardware.GraphicsCard;
-import Entities.Hardware.NetworkAdapter;
-import Entities.Hardware.PcComponent;
+import Entities.Hardware.*;
 import Entities.Network;
 import org.testng.internal.collections.Pair;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class PcComponentRepository implements GenericRepository<PcComponent> {
 
@@ -25,6 +25,10 @@ public class PcComponentRepository implements GenericRepository<PcComponent> {
     @Override
     public PcComponent get(int id) {
         return videoCards.get(id);
+    }
+
+    public PcComponent getNA(int id){
+        return networkAdapters.get(id);
     }
 
     @Override
@@ -56,5 +60,32 @@ public class PcComponentRepository implements GenericRepository<PcComponent> {
     @Override
     public int getSize() {
         return videoCards.size() + networkAdapters.size();
+    }
+
+
+    public Map<String, Number> getBothSizes(){
+        Map<String, Number> coordinates = new HashMap<>();
+
+        coordinates.put("videoCards", videoCards.size());
+        coordinates.put("networkAdapters", networkAdapters.size());
+
+        return coordinates;
+    }
+    @Override
+    public boolean isIn(PcComponent entity) {
+        if (entity instanceof GraphicsCard)
+            for (int i=0; i<videoCards.size(); i++) {
+                if (videoCards.get(i) == entity) {
+                    return true;
+                }
+            }
+        if (entity instanceof NetworkAdapter)
+            for (int i=0; i<networkAdapters.size(); i++) {
+                if (networkAdapters.get(i) == entity) {
+                    return true;
+                }
+            }
+
+        return false;
     }
 }
