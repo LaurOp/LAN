@@ -6,7 +6,7 @@ public interface GenericRepository<T> {
 
     public T get(int id);
 
-    public void update(T entity);
+    public void update(T entity, T newEntity);
 
     public void delete(T entity);
 

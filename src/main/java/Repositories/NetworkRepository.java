@@ -34,17 +34,13 @@ public class NetworkRepository implements GenericRepository<Network> {
     }
 
     @Override
-    public void update(Network entity) {    //bring the updated one first in line
-        int poz = 0;
+    public void update(Network entity, Network newEntity) {
         for (int i=0; i<server.length; i++) {
-            if (server[i].equals(entity)) {
-                poz = i;
-                break;
+            if (server[i] == entity) {
+                server[i] = newEntity;
+                return;
             }
         }
-        Network temp = server[poz];
-        server[poz] = server[0];
-        server[0] = temp;
     }
 
     @Override

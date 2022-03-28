@@ -32,8 +32,13 @@ public class ComputerRepository implements GenericRepository<Computer> {
     }
 
     @Override
-    public void update(Computer entity) {
-
+    public void update(Computer entity, Computer newEntity) {
+        for (int i=0; i<computers.length; i++) {
+            if (computers[i] == entity) {
+                computers[i] = newEntity;
+                return;
+            }
+        }
     }
 
     @Override
