@@ -13,9 +13,7 @@ import Services.ConnectableService;
 import Services.NetworkService;
 import org.testng.annotations.Test;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Scanner;
+import java.util.*;
 
 public class Main {
 
@@ -106,6 +104,11 @@ public class Main {
             return;
         }
         if (text.equals("List all computers")){
+            if (networkService.getComputers(currentNet).size() == 0){
+                System.out.println("No computers yet");
+                return;
+            }
+
             System.out.println(currentNet.getComputers() + "indexed as ");
             for(var x : networkService.getComputers(currentNet)){
                 System.out.println(x);
@@ -113,9 +116,25 @@ public class Main {
             return;
         }
         if (text.equals("Remove computer from network")){
+            if (networkService.getComputers(currentNet).size() == 0){
+                System.out.println("No computers yet");
+                return;
+            }
             System.out.println("Which one to remove? (0-indexed)");
             int todelete = Integer.parseInt(s.nextLine());
-            networkService.removeComputer(currentNet, todelete);
+
+            if (todelete > Collections.max(networkService.getComputers(currentNet))){
+                System.out.println("Don't know that computer");
+                return;
+            }
+
+
+            try{
+                networkService.removeComputer(currentNet, todelete);
+            }
+            catch (Exception e){
+                System.out.println("Not found");
+            }
             return;
         }
         if (text.equals("Back to networks")){
@@ -123,61 +142,25 @@ public class Main {
             optionsText = new String[]{"Add new network", "List all networks", "Edit a network", "Exit"};
             return;
         }
-        if (text.equals("Edit a network")){
+        if (text.equals("Edit a network")) {
             System.out.println("Which network do you want to edit? (0-indexed)");
             var x = Integer.parseInt(s.nextLine());
 
-            currentNet = networkRepository.get(x);
+            if (x > Collections.max(networkService.getAllNetworks())) {
+                System.out.println("bad input");
 
-            options = new int[]{1, 2, 3, 4};
-            optionsText = new String[]{"Add a computer", "List all computers", "Remove a computer", "Exit"};
+                options = new int[]{1, 2, 3, 4};
+                optionsText = new String[]{"Add new network", "List all networks", "Edit a network", "Exit"};
+            } else {
+                currentNet = networkService.getNthNetwork(x);
+                System.out.println(currentNet);
 
-            return;
+                options = new int[]{1, 2, 3, 4, 5};
+                optionsText = new String[]{"Add computer to network", "List all computers", "Remove computer from network", "Back to networks", "Exit"};
+
+                return;
+            }
         }
-
     }
 
-
-    @Test
-    public void addHardware(){
-        Computer comp1 = new Computer();
-
-        Hardware hardw1 = new Hardware();
-
-        NetworkAdapter n1 = new NetworkAdapter();
-        n1.setPrice(21.1);
-        hardw1.addPcComponent(n1);
-
-        GraphicsCard g1 = new GraphicsCard();
-        g1.setPrice(194.2);
-        hardw1.addPcComponent(g1);
-
-        comp1.setHardware(hardw1);
-        System.out.println(comp1.totalValueOfPC());
-    }
-
-    @Test
-    public void testPrinterAndSwitchOnline(){
-        System.out.println(connectableService.getAllOnline());
-        connectableService.createConnectable(true,"Printer1");
-        connectableService.createConnectable(true,"Printer2");
-        connectableService.createConnectable(true,"Printer3");
-        connectableService.createConnectable(true,"Printer4");
-        connectableService.createConnectable(false,"Switch1");
-        connectableService.createConnectable(false,"Switch2");
-        connectableService.createConnectable(false,"Switch3");
-
-        Hardware hardware = new Hardware();
-        connectableService.connectPCwithPrSw(hardware, connectableService.getConnectable(true, 1));
-        connectableService.connectPCwithPrSw(hardware, connectableService.getConnectable(false, 0));
-
-        System.out.println(connectableService.getAllOnline());
-
-        System.out.println(connectableService.getFreePorts(connectableService.getConnectable(true, 1)));
-        System.out.println(connectableService.getFreePorts(connectableService.getConnectable(false, 0)));
-
-    }
-
-//    @Test
-//    public void
 }

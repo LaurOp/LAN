@@ -36,7 +36,7 @@ public class NetworkService {
         x.add(comp);
         networkRepository.get(poz).setComputers(x);
     }
-    public void removeComputer(Network net, int index){
+    public void removeComputer(Network net, int id) throws Exception {
         if (!networkRepository.isIn(net)){
             return;
         }
@@ -47,8 +47,18 @@ public class NetworkService {
                 break;
             }
         }
+        var poz2 = -1;
         var x = networkRepository.get(poz).getComputers();
-        x.remove(index);
+        for(int i = 0; i< x.size(); i++){
+            if (x.get(i).getID() == id) {
+                poz2 = i;
+                break;
+            }
+        }
+        if (poz2 < 0){
+            throw new Exception();
+        }
+        x.remove(poz2);
         networkRepository.get(poz).setComputers(x);
     }
 
@@ -70,13 +80,14 @@ public class NetworkService {
         return rez;
     }
 
-    public ArrayList<Network> getAllNetworks(){
-        ArrayList<Network> rez = new ArrayList<>();
+    public ArrayList<Integer> getAllNetworks(){
+        ArrayList<Integer> rez = new ArrayList<>();
         var i = 0;
         var c = 0;
         for(var x : networkRepository.getServer()){
             if (x != null) {
                 System.out.println("Network " + i);
+                rez.add(i);
                 c = 1;
             }
             i++;
@@ -87,5 +98,12 @@ public class NetworkService {
             );
         }
         return rez;
+    }
+
+    public Network getNthNetwork(int n){
+        if (n < 0 || n >= networkRepository.getSize()){
+            return null;
+        }
+        return networkRepository.get(n);
     }
 }
