@@ -12,6 +12,14 @@ public class ComputerRepository implements GenericRepository<Computer> {
 
     private Computer[] computers = new Computer[100];
 
+    public Computer[] getComputers() {
+        return computers;
+    }
+
+    public void setComputers(Computer[] computers) {
+        this.computers = computers;
+    }
+
     @Override
     public void add(Computer entity) {
 

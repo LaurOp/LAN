@@ -3,12 +3,14 @@ import Entities.Hardware.GraphicsCard;
 import Entities.Hardware.Hardware;
 import Entities.Hardware.NetworkAdapter;
 import Services.ConnectableService;
+import Services.HardwareService;
 import org.testng.annotations.Test;
 
 public class AutomatedTests {
 
 
     ConnectableService connectableService = new ConnectableService();
+    HardwareService hardwareService = new HardwareService();
 
     @Test
     public void addHardware(){
@@ -25,7 +27,7 @@ public class AutomatedTests {
         hardw1.addPcComponent(g1);
 
         comp1.setHardware(hardw1);
-        System.out.println(comp1.totalValueOfPC());
+        System.out.println(hardwareService.totalValueOfPC(comp1.getHardware()));
     }
 
     @Test

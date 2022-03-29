@@ -17,6 +17,7 @@ public class Computer {
     public Computer() {
         ID = counter;
         counter++;
+        hardware = new Hardware();
     }
 
     public int getID() {
@@ -27,6 +28,7 @@ public class Computer {
         ID = id;
         this.hardware = hardware;
         this.software = software;
+        hardware = new Hardware();
     }
 
     public Hardware getHardware() {
@@ -45,7 +47,4 @@ public class Computer {
         this.software = software;
     }
 
-    public double totalValueOfPC(){
-        return hardware.totalValueOfPC();
-    }
 }

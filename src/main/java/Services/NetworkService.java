@@ -2,6 +2,7 @@ package Services;
 
 import Entities.Computer;
 import Entities.Network;
+import Repositories.ComputerRepository;
 import Repositories.NetworkRepository;
 
 import java.util.ArrayList;
@@ -9,6 +10,8 @@ import java.util.ArrayList;
 public class NetworkService {
 
     private NetworkRepository networkRepository = new NetworkRepository();
+    private ComputerRepository computerRepository = new ComputerRepository();
+
 
     public int createNetwork() throws Exception {
         Network x = new Network();
@@ -22,9 +25,10 @@ public class NetworkService {
 
     public void addComputer(Network net, Computer comp){
         if (!networkRepository.isIn(net)){
-            System.out.println("here");
+            System.out.println("Error adding computer");
             return;
         }
+
         var poz = 0;
         for(int i = 0; i< networkRepository.getSize(); i++){
             if (networkRepository.get(i) == net) {

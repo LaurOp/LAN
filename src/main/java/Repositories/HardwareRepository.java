@@ -8,6 +8,14 @@ import java.util.Arrays;
 public class HardwareRepository implements GenericRepository<Hardware> {
     private Hardware[] storage = new Hardware[20];
 
+    public Hardware[] getStorage() {
+        return storage;
+    }
+
+    public void setStorage(Hardware[] storage) {
+        this.storage = storage;
+    }
+
     @Override
     public void add(Hardware entity) {
 
