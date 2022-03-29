@@ -53,6 +53,7 @@ public class Main {
                 menu.pick(optionsText[option-1]);
             }
             catch (Exception e){
+                System.out.println(e);
                 exitcond = false;
             }
         }
@@ -84,7 +85,7 @@ public class Main {
     public void pick(String text) throws Exception {
 
         if (text.equals("Exit")){
-            throw new Exception();
+            throw new Exception("\n See you again!");
         }
         if (text.equals("Add new network")){
             int x;
@@ -217,8 +218,8 @@ public class Main {
         if (text.equals("Edit connections")){
 
 
-            options = new int[]{1, 2, 3, 4, 5};
-            optionsText = new String[]{"Add connection", "List connections", "Remove connection", "Back to selected network" , "Exit"};
+            options = new int[]{1, 2, 3, 4, 5, 6};
+            optionsText = new String[]{"Add connection", "Connect to an existing connection", "List connections", "Remove connection", "Back to selected network" , "Exit"};
             return;
         }
         if (text.equals("Edit its components")){
@@ -231,6 +232,55 @@ public class Main {
             }
             catch (Exception e){
                 System.out.println("Bad hardware " + e);
+            }
+
+            return;
+        }if (text.equals("Connect to an existing connection")){
+            var dinservice = hardwareService.getAllConnectionsNoHW();
+            System.out.println("aici");
+            ArrayList<Printer> printers = new ArrayList<>();
+            ArrayList<Switch> switches = new ArrayList<>();
+
+            for(var el : dinservice){
+                if(el instanceof  Printer){
+                    printers.add((Printer) el);
+                }
+                if(el instanceof Switch){
+                    switches.add((Switch) el);
+                }
+            }
+
+            for(int i = 0; i<printers.size(); i++){
+                System.out.println("Printer " + printers.get(i).getIP() + ", id " + i);
+            }
+            for(int i = 0; i<switches.size(); i++){
+                System.out.println("Switch " + switches.get(i).getIP() + ", id " + i);
+            }
+
+            System.out.println("Want to select a printer? (0/1)");
+            int isprinter = Integer.parseInt(s.nextLine());
+
+            if (isprinter != 0){
+                System.out.println("Which printer? (id mentioned in 'list all')");
+                int poz = Integer.parseInt(s.nextLine());
+                if(poz >= printers.size() || poz < 0){
+                    System.out.println("Don't know that printer");
+                    return;
+                }
+                var deAdd = printers.get(poz);
+
+                hardwareService.addConnection(currentHardw, deAdd);
+            }
+            else {
+                System.out.println("Which switch? (id mentioned in 'list all')");
+                int poz = Integer.parseInt(s.nextLine());
+                if(poz >= switches.size() || poz < 0){
+                    System.out.println("Don't know that switch");
+                    return;
+                }
+                var deAdd = switches.get(poz);
+
+                hardwareService.addConnection(currentHardw, deAdd);
             }
 
             return;

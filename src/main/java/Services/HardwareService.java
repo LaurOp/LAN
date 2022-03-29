@@ -6,6 +6,8 @@ import Repositories.HardwareRepository;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 public class HardwareService {
 
@@ -100,6 +102,20 @@ public class HardwareService {
                 }
             }
         }
+        return rez;
+    }
+
+    public Set<Connectable> getAllConnectionsNoHW(){
+        Set<Connectable> rez = new HashSet<>();
+        for(var x : hardwareRepository.getStorage()){
+            if (x!= null)
+                for(var el : x.getConnections()){
+                    if (el != null)
+                        rez.add(el);
+                    System.out.println("aici5");
+                }
+        }
+        System.out.println("aici4");
         return rez;
     }
 

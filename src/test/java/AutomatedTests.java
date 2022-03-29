@@ -51,4 +51,9 @@ public class AutomatedTests {
         System.out.println(connectableService.getFreePorts(connectableService.getConnectable(false, 0)));
 
     }
+
+    @Test
+    public void flow1(){
+        //TODO more tests
+    }
 }
