@@ -12,10 +12,12 @@ import Services.ComputerService;
 import Services.ConnectableService;
 import Services.HardwareService;
 import Services.HardwareService.*;
+import Services.IO.Reader;
 import Services.NetworkService;
 import org.testng.annotations.Test;
 import org.testng.internal.collections.Pair;
 
+import java.io.IOException;
 import java.util.*;
 
 public class Main {
@@ -38,12 +40,18 @@ public class Main {
     static Computer currentComp;
     static Hardware currentHardw;
 
-    public Main() {
+    public Main() throws IOException {
         options = new int[]{1, 2, 3, 4};
         optionsText = new String[]{"Add new network", "List all networks", "Edit a network", "Exit"};
+
+        Reader reader = Reader.getInstance();
+        reader.readPrinters("src/main/resources/Seeders/printerSeed.txt");
+        reader.readSwitches("src/main/resources/Seeders/switchSeed.txt");
+        reader.readGraphicsCards("src/main/resources/Seeders/graphicscardSeed.txt");
+        reader.readNetworkAdapters("src/main/resources/Seeders/networkadapterSeed.txt");
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         Main menu = new Main();
         boolean exitcond = true;
         while(exitcond){
@@ -237,7 +245,7 @@ public class Main {
             return;
         }if (text.equals("Connect to an existing connection")){
             var dinservice = hardwareService.getAllConnectionsNoHW();
-            System.out.println("aici");
+
             ArrayList<Printer> printers = new ArrayList<>();
             ArrayList<Switch> switches = new ArrayList<>();
 
@@ -248,6 +256,12 @@ public class Main {
                 if(el instanceof Switch){
                     switches.add((Switch) el);
                 }
+            }
+
+            var checkLen = printers.size() + switches.size();
+            if (checkLen == 0){
+                System.out.println("No connectables added yet");
+                return;
             }
 
             for(int i = 0; i<printers.size(); i++){

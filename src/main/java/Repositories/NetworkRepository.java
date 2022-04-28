@@ -9,14 +9,14 @@ import java.util.List;
 
 public class NetworkRepository implements GenericRepository<Network> {
 
-    private Network[] server = new Network[20];
+    static private Network[] server = new Network[20];
 
     public Network[] getServer() {
         return server;
     }
 
     public void setServer(Network[] server) {
-        this.server = server;
+        NetworkRepository.server = server;
     }
 
     @Override
@@ -77,8 +77,8 @@ public class NetworkRepository implements GenericRepository<Network> {
 
     @Override
     public boolean isIn(Network entity) {
-        for (int i = 0; i < server.length; i++)
-            if (server[i] == entity) {
+        for (Network network : server)
+            if (network == entity) {
                 return true;
             }
 

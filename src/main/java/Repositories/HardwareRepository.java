@@ -6,14 +6,14 @@ import Entities.Network;
 import java.util.Arrays;
 
 public class HardwareRepository implements GenericRepository<Hardware> {
-    private Hardware[] storage = new Hardware[20];
+    static private Hardware[] storage = new Hardware[20];
 
     public Hardware[] getStorage() {
         return storage;
     }
 
     public void setStorage(Hardware[] storage) {
-        this.storage = storage;
+        HardwareRepository.storage = storage;
     }
 
     @Override
@@ -65,8 +65,8 @@ public class HardwareRepository implements GenericRepository<Hardware> {
 
     @Override
     public boolean isIn(Hardware entity) {
-        for (int i = 0; i < storage.length; i++)
-            if (storage[i] == entity) {
+        for (Hardware hardware : storage)
+            if (hardware == entity) {
                 return true;
             }
 

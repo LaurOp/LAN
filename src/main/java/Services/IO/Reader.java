@@ -1,0 +1,80 @@
+package Services.IO;
+
+import Entities.Hardware.Hardware;
+import Entities.Hardware.Printer;
+import Entities.Hardware.Switch;
+import Repositories.ConnectableRepository;
+import Repositories.HardwareRepository;
+import Repositories.PcComponentRepository;
+
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+
+//Singleton
+public class Reader {
+    private static Reader instance = null;
+
+    private Reader(){}
+
+    public static Reader getInstance()
+    {
+        if (instance == null)
+            instance = new Reader();
+        return instance;
+    }
+
+    private ConnectableRepository connectableRepository = new ConnectableRepository();
+    private PcComponentRepository pcComponentRepository = new PcComponentRepository();
+    private HardwareRepository hardwareRepository = new HardwareRepository();
+
+    BufferedReader reader;
+
+    public void readPrinters(String filename) throws IOException {
+        reader = new BufferedReader(new FileReader(filename));
+        var names = reader.readLine();
+
+        Hardware defaultHardware = new Hardware();
+
+        String line;
+        while((line = reader.readLine()) != null){
+            var splitLine = line.split(",");
+            Printer newPrinter = new Printer(splitLine[0], splitLine[1]);
+
+            connectableRepository.add(newPrinter);
+            defaultHardware.addConnection(newPrinter);
+        }
+
+        hardwareRepository.add(defaultHardware);
+        reader.close();
+    }
+
+    public void readSwitches(String filename) throws IOException {
+        reader = new BufferedReader(new FileReader(filename));
+        var names = reader.readLine();
+
+        Hardware defaultHardware = new Hardware();
+
+        String line;
+        while((line = reader.readLine()) != null){
+            var splitLine = line.split(",");
+            Switch newSwitch = new Switch(splitLine[0], Integer.parseInt(splitLine[1])==1);
+
+            connectableRepository.add(newSwitch);
+            defaultHardware.addConnection(newSwitch);
+        }
+
+        hardwareRepository.add(defaultHardware);
+        reader.close();
+    }
+
+    public void readGraphicsCards(String filename) throws FileNotFoundException {
+        reader = new BufferedReader(new FileReader(filename));
+    }
+
+    public void readNetworkAdapters(String filename) throws FileNotFoundException {
+        reader = new BufferedReader(new FileReader(filename));
+    }
+
+}

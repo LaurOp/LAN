@@ -10,8 +10,8 @@ import java.util.Map;
 
 public class PcComponentRepository implements GenericRepository<PcComponent> {
 
-    ArrayList<GraphicsCard> videoCards = new ArrayList<>();
-    ArrayList<NetworkAdapter> networkAdapters = new ArrayList<>();
+    static ArrayList<GraphicsCard> videoCards = new ArrayList<>();
+    static ArrayList<NetworkAdapter> networkAdapters = new ArrayList<>();
 
 
     @Override
@@ -74,14 +74,14 @@ public class PcComponentRepository implements GenericRepository<PcComponent> {
     @Override
     public boolean isIn(PcComponent entity) {
         if (entity instanceof GraphicsCard)
-            for (int i=0; i<videoCards.size(); i++) {
-                if (videoCards.get(i) == entity) {
+            for (GraphicsCard videoCard : videoCards) {
+                if (videoCard == entity) {
                     return true;
                 }
             }
         if (entity instanceof NetworkAdapter)
-            for (int i=0; i<networkAdapters.size(); i++) {
-                if (networkAdapters.get(i) == entity) {
+            for (NetworkAdapter networkAdapter : networkAdapters) {
+                if (networkAdapter == entity) {
                     return true;
                 }
             }

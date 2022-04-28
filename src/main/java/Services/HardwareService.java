@@ -112,10 +112,8 @@ public class HardwareService {
                 for(var el : x.getConnections()){
                     if (el != null)
                         rez.add(el);
-                    System.out.println("aici5");
                 }
         }
-        System.out.println("aici4");
         return rez;
     }
 

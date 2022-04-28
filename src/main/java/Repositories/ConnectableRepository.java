@@ -9,19 +9,19 @@ import java.util.Map;
 
 public class ConnectableRepository implements GenericRepository<Connectable> {
 
-    ArrayList<Printer> printers = new ArrayList<>();
-    ArrayList<Switch> switches = new ArrayList<>();
+    static ArrayList<Printer> printers = new ArrayList<>();
+    static ArrayList<Switch> switches = new ArrayList<>();
 
     public boolean isIn(Connectable entity){
         if (entity instanceof Printer)
-            for (int i=0; i<printers.size(); i++) {
-                if (printers.get(i) == entity) {
+            for (Printer printer : printers) {
+                if (printer == entity) {
                     return true;
                 }
             }
         if (entity instanceof  Switch)
-            for (int i=0; i<switches.size(); i++) {
-                if (switches.get(i) == entity) {
+            for (Switch aSwitch : switches) {
+                if (aSwitch == entity) {
                     return true;
                 }
             }
