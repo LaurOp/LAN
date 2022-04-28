@@ -1,0 +1,20 @@
+Opening app 2022-04-28 20:38:30.674
+Added new network 2022-04-28 20:38:32.168
+Added a new computer to a network 2022-04-28 20:38:33.598
+Editing a computer 2022-04-28 20:38:34.933
+Chose hardware 2022-04-28 20:38:35.981
+Chose connections 2022-04-28 20:38:36.829
+Listed current computer connections 2022-04-28 20:38:38.365
+Attempted to remove connection 2022-04-28 20:38:42.149
+Connected to an existing connectable 2022-04-28 20:38:49.965
+Added a new connectable 2022-04-28 20:38:59.701
+Added new network 2022-04-28 20:39:07.917
+Added a new computer to a network 2022-04-28 20:39:11.485
+Editing a computer 2022-04-28 20:39:16.981
+Chose hardware 2022-04-28 20:39:18.101
+Chose components 2022-04-28 20:39:20.861
+Chose connections 2022-04-28 20:39:22.813
+Listed current computer connections 2022-04-28 20:39:24.429
+Connected to an existing connectable 2022-04-28 20:39:32.765
+Listed current computer connections 2022-04-28 20:39:34.759
+Closing app 2022-04-28 20:39:38.318

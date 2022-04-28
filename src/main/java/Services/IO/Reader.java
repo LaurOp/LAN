@@ -1,8 +1,6 @@
 package Services.IO;
 
-import Entities.Hardware.Hardware;
-import Entities.Hardware.Printer;
-import Entities.Hardware.Switch;
+import Entities.Hardware.*;
 import Repositories.ConnectableRepository;
 import Repositories.HardwareRepository;
 import Repositories.PcComponentRepository;
@@ -69,12 +67,42 @@ public class Reader {
         reader.close();
     }
 
-    public void readGraphicsCards(String filename) throws FileNotFoundException {
+    public void readGraphicsCards(String filename) throws IOException {
         reader = new BufferedReader(new FileReader(filename));
+        var names = reader.readLine();
+
+        Hardware defaultHardware = new Hardware();
+
+        String line;
+        while((line = reader.readLine()) != null){
+            var splitLine = line.split(",");
+            GraphicsCard newGraphics = new GraphicsCard(Integer.parseInt(splitLine[0]), Integer.parseInt(splitLine[1])==1, Double.parseDouble(splitLine[2]));
+
+            pcComponentRepository.add(newGraphics);
+            defaultHardware.addPcComponent(newGraphics);
+        }
+
+        hardwareRepository.add(defaultHardware);
+        reader.close();
     }
 
-    public void readNetworkAdapters(String filename) throws FileNotFoundException {
+    public void readNetworkAdapters(String filename) throws IOException {
         reader = new BufferedReader(new FileReader(filename));
+        var names = reader.readLine();
+
+        Hardware defaultHardware = new Hardware();
+
+        String line;
+        while((line = reader.readLine()) != null){
+            var splitLine = line.split(",");
+            NetworkAdapter newNetworkAdapter = new NetworkAdapter(Integer.parseInt(splitLine[0]),Double.parseDouble(splitLine[1]));
+
+            pcComponentRepository.add(newNetworkAdapter);
+            defaultHardware.addPcComponent(newNetworkAdapter);
+        }
+
+        hardwareRepository.add(defaultHardware);
+        reader.close();
     }
 
 }

@@ -13,6 +13,7 @@ import Services.ConnectableService;
 import Services.HardwareService;
 import Services.HardwareService.*;
 import Services.IO.Reader;
+import Services.IO.Writer;
 import Services.NetworkService;
 import org.testng.annotations.Test;
 import org.testng.internal.collections.Pair;
@@ -40,6 +41,16 @@ public class Main {
     static Computer currentComp;
     static Hardware currentHardw;
 
+    static Writer audit;
+
+    static {
+        try {
+            audit = Writer.getInstance();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public Main() throws IOException {
         options = new int[]{1, 2, 3, 4};
         optionsText = new String[]{"Add new network", "List all networks", "Edit a network", "Exit"};
@@ -54,6 +65,7 @@ public class Main {
     public static void main(String[] args) throws IOException {
         Main menu = new Main();
         boolean exitcond = true;
+        audit.writeToAudit("Opening app");
         while(exitcond){
             try{
                 menu.printInteractiveMenu();
@@ -65,6 +77,8 @@ public class Main {
                 exitcond = false;
             }
         }
+        audit.writeToAudit("Closing app");
+        audit.closeStream();
     }
 
     public void printInteractiveMenu(){
@@ -107,11 +121,12 @@ public class Main {
             currentNet = networkService.getNetwork(x);
             options = new int[]{1,2,3,4,5,6};
             optionsText = new String[]{"Add computer to network", "List all computers", "Remove computer from network", "Edit a computer", "Back to networks", "Exit"};
-
+            audit.writeToAudit("Added new network");
             return;
         }
         if (text.equals("List all networks")){
             networkService.getAllNetworks();
+            audit.writeToAudit("Listed all networks");
             return;
         }
         if (text.equals("Add computer to network")){
@@ -119,6 +134,7 @@ public class Main {
             currentComp = comp;
             computerService.addComputer(comp);
             networkService.addComputer(currentNet, comp);
+            audit.writeToAudit("Added a new computer to a network");
             return;
         }
         if (text.equals("List all computers")){
@@ -131,11 +147,14 @@ public class Main {
             for(var x : networkService.getComputers(currentNet)){
                 System.out.println(x);
             }
+
+            audit.writeToAudit("Listed all network computers");
             return;
         }
         if (text.equals("Remove computer from network")){
             if (networkService.getComputers(currentNet).size() == 0){
                 System.out.println("No computers yet");
+                audit.writeToAudit("Attempted to remove computer from network");
                 return;
             }
             System.out.println("Which one to remove? (0-indexed)");
@@ -143,6 +162,7 @@ public class Main {
 
             if (networkService.getComputers(currentNet).size() == 0 || todelete > Collections.max(networkService.getComputers(currentNet))){
                 System.out.println("Don't know that computer");
+                audit.writeToAudit("Attempted to remove computer from network");
                 return;
             }
 
@@ -152,11 +172,14 @@ public class Main {
             }
             catch (Exception e){
                 System.out.println("Not found");
+                audit.writeToAudit("Attempted to remove computer from network");
             }
 
             if (!networkService.getComputers(currentNet).contains(currentComp.getID())){
                 currentComp = null;
+                audit.writeToAudit("Removed computer from network");
             }
+
             return;
         }
         if (text.equals("Back to networks")){
@@ -170,7 +193,7 @@ public class Main {
 
             if (!networkService.getAllNetworks().contains(x)) {
                 System.out.println("Don't know that network");
-
+                audit.writeToAudit("Attempted to edit a network");
                 options = new int[]{1, 2, 3, 4};
                 optionsText = new String[]{"Add new network", "List all networks", "Edit a network", "Exit"};
             } else {
@@ -180,6 +203,7 @@ public class Main {
                 options = new int[]{1, 2, 3, 4, 5, 6};
                 optionsText = new String[]{"Add computer to network", "List all computers", "Remove computer from network", "Edit a computer", "Back to networks", "Exit"};
 
+                audit.writeToAudit("Edited a network");
                 return;
             }
         }
@@ -190,6 +214,7 @@ public class Main {
             if (!networkService.getComputers(currentNet).contains(x)) {
                 System.out.println("Don't know that computer");
 
+                audit.writeToAudit("Attempted to edit a computer");
                 options = new int[]{1, 2, 3, 4, 5, 6};
                 optionsText = new String[]{"Add computer to network", "List all computers", "Remove computer from network", "Edit a computer", "Back to networks", "Exit"};
 
@@ -198,7 +223,11 @@ public class Main {
             var aux = computerService.getComputerByID(x);
             if (aux == null){
                 System.out.println("Don't know that computer");
+                audit.writeToAudit("Attempted to edit a computer");
                 return;
+            }
+            else{
+                audit.writeToAudit("Editing a computer");
             }
             currentComp = aux;
 
@@ -215,12 +244,14 @@ public class Main {
 
             options = new int[]{1, 2, 3};
             optionsText = new String[]{"Edit connections", "Edit its components", "Exit"};
-
+            audit.writeToAudit("Chose hardware");
             return;
         }
         if (text.equals("Edit its software")){
             Software softAux = currentComp.getSoftware();
 
+
+            audit.writeToAudit("Chose software");
             return;
         }
         if (text.equals("Edit connections")){
@@ -228,9 +259,11 @@ public class Main {
 
             options = new int[]{1, 2, 3, 4, 5, 6};
             optionsText = new String[]{"Add connection", "Connect to an existing connection", "List connections", "Remove connection", "Back to selected network" , "Exit"};
+            audit.writeToAudit("Chose connections");
             return;
         }
         if (text.equals("Edit its components")){
+            audit.writeToAudit("Chose components");
             return;
         }
         if (text.equals("Add connection")){
@@ -241,7 +274,7 @@ public class Main {
             catch (Exception e){
                 System.out.println("Bad hardware " + e);
             }
-
+            audit.writeToAudit("Added a new connectable");
             return;
         }if (text.equals("Connect to an existing connection")){
             var dinservice = hardwareService.getAllConnectionsNoHW();
@@ -261,6 +294,7 @@ public class Main {
             var checkLen = printers.size() + switches.size();
             if (checkLen == 0){
                 System.out.println("No connectables added yet");
+                audit.writeToAudit("Attempted to connect to an existing connectable");
                 return;
             }
 
@@ -279,10 +313,11 @@ public class Main {
                 int poz = Integer.parseInt(s.nextLine());
                 if(poz >= printers.size() || poz < 0){
                     System.out.println("Don't know that printer");
+                    audit.writeToAudit("Attempted to connect to an existing connectable");
                     return;
                 }
                 var deAdd = printers.get(poz);
-
+                audit.writeToAudit("Connected to an existing connectable");
                 hardwareService.addConnection(currentHardw, deAdd);
             }
             else {
@@ -290,10 +325,11 @@ public class Main {
                 int poz = Integer.parseInt(s.nextLine());
                 if(poz >= switches.size() || poz < 0){
                     System.out.println("Don't know that switch");
+                    audit.writeToAudit("Attempted to connect to an existing connectable");
                     return;
                 }
                 var deAdd = switches.get(poz);
-
+                audit.writeToAudit("Connected to an existing connectable");
                 hardwareService.addConnection(currentHardw, deAdd);
             }
 
@@ -305,7 +341,7 @@ public class Main {
             for(var el : dinservice){
                 System.out.println(el.getL() + " " + el.getR());
             }
-
+            audit.writeToAudit("Listed current computer connections");
             return;
         }
         if (text.equals("Remove connection")){
@@ -323,9 +359,12 @@ public class Main {
                     throw new Exception("not a valid int");
                 }
                 hardwareService.removeConnection(currentHardw, poz);
+
+                audit.writeToAudit("Removed a connection");
             }
             catch (Exception e){
                 System.out.println("Don't know that connection");
+                audit.writeToAudit("Attempted to remove connection");
             }
             return;
         }
