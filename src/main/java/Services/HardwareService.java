@@ -3,6 +3,7 @@ package Services;
 import Entities.Hardware.*;
 import Repositories.ConnectableRepository;
 import Repositories.HardwareRepository;
+import Repositories.PcComponentRepository;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -13,6 +14,7 @@ public class HardwareService {
 
     HardwareRepository hardwareRepository = new HardwareRepository();
     ConnectableRepository connectableRepository = new ConnectableRepository();
+    PcComponentRepository pcComponentRepository = new PcComponentRepository();
 
     public double totalValueOfPC(Hardware hardware){
         double total = 0;
@@ -69,6 +71,26 @@ public class HardwareService {
 
     }
 
+    public void addComponent(Hardware hardware, PcComponent component) throws Exception{
+        pcComponentRepository.add(component);
+        var poz = -1;
+        for(int i = 0; i< hardwareRepository.getStorage().length; i++){
+            if(hardwareRepository.getStorage()[i] == hardware){
+                poz = i;
+                break;
+            }
+        }
+        if (poz == -1){
+            throw new Exception("hardware not found");
+        }
+
+        var x = hardwareRepository.getStorage()[poz];
+        x.addPcComponent(component);
+        var y = hardwareRepository.getStorage();
+        y[poz] = x;
+        hardwareRepository.setStorage(y);
+    }
+
     public void addHardware(Hardware hardware){
         if (!hardwareRepository.isIn(hardware))
             hardwareRepository.add(hardware);
@@ -105,11 +127,54 @@ public class HardwareService {
         return rez;
     }
 
+    public ArrayList<Pair<Integer, String>> getAllComponents(Hardware hardware) throws Exception {
+        ArrayList<Pair<Integer, String>> rez = new ArrayList<>();
+
+        var poz = -1;
+        for(int i = 0; i< hardwareRepository.getStorage().length; i++){
+            if(hardwareRepository.getStorage()[i] == hardware){
+                poz = i;
+                break;
+            }
+        }
+        if (poz == -1){
+            throw new Exception("hardware not found");
+        }
+        var i = 0;
+        for (var el : hardwareRepository.getStorage()[poz].getSet_of_components()){
+            if (el != null){
+                if( el instanceof GraphicsCard) {
+                    String s = "GraphicsCard" + ((GraphicsCard) el).getVideoMemory();
+                    Pair<Integer, String> pair = new Pair<>(i, s);
+                    rez.add(pair);
+                }
+                if( el instanceof NetworkAdapter) {
+                    String s = "NetworkAdapter" + ((NetworkAdapter) el).getNrOfPorts();
+                    Pair<Integer, String> pair = new Pair<>(i, s);
+                    rez.add(pair);
+                }
+            }
+            i++;
+        }
+        return rez;
+    }
+
     public Set<Connectable> getAllConnectionsNoHW(){
         Set<Connectable> rez = new HashSet<>();
         for(var x : hardwareRepository.getStorage()){
             if (x!= null)
                 for(var el : x.getConnections()){
+                    if (el != null)
+                        rez.add(el);
+                }
+        }
+        return rez;
+    }
+    public Set<PcComponent> getAllComponentsNoHW(){
+        Set<PcComponent> rez = new HashSet<>();
+        for(var x : hardwareRepository.getStorage()){
+            if (x!= null)
+                for(var el : x.getSet_of_components()){
                     if (el != null)
                         rez.add(el);
                 }
@@ -133,6 +198,34 @@ public class HardwareService {
         x.remove(index);
         var y = hardwareRepository.getStorage();
         y[poz].setConnections(x);
+        hardwareRepository.setStorage(y);
+    }
+
+    public void removeComponent(Hardware hardware, int index) throws Exception {
+        var poz = -1;
+        for(int i = 0; i< hardwareRepository.getStorage().length; i++){
+            if(hardwareRepository.getStorage()[i] == hardware){
+                poz = i;
+                break;
+            }
+        }
+        if (poz == -1){
+            throw new Exception("hardware not found");
+        }
+
+        var x = hardwareRepository.getStorage()[poz].getSet_of_components();
+
+        var poz2 = 0;
+        for (var el : x){
+            if (poz2 == index){
+                x.remove(el);
+                break;
+            }
+            poz2++;
+        }
+
+        var y = hardwareRepository.getStorage();
+        y[poz].setSet_of_components(x);
         hardwareRepository.setStorage(y);
     }
 }

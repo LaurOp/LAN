@@ -258,11 +258,14 @@ public class Main {
 
 
             options = new int[]{1, 2, 3, 4, 5, 6};
-            optionsText = new String[]{"Add connection", "Connect to an existing connection", "List connections", "Remove connection", "Back to selected network" , "Exit"};
+            optionsText = new String[]{"Add connection", "Connect to an existing connection", "List its connections", "Remove connection", "Back to selected network" , "Exit"};
             audit.writeToAudit("Chose connections");
             return;
         }
         if (text.equals("Edit its components")){
+            options = new int[]{1, 2, 3, 4, 5, 6};
+            optionsText = new String[]{"Add component", "Connect to an existing component", "List its components", "Remove component", "Back to selected network" , "Exit"};
+
             audit.writeToAudit("Chose components");
             return;
         }
@@ -270,6 +273,16 @@ public class Main {
             try{
                 Connectable deAdd = readConnectable();
                 hardwareService.addConnection(currentHardw, deAdd);
+            }
+            catch (Exception e){
+                System.out.println("Bad hardware " + e);
+            }
+            audit.writeToAudit("Added a new connectable");
+            return;
+        }if (text.equals("Add component")){
+            try{
+                PcComponent deAdd = readComponent();
+                hardwareService.addComponent(currentHardw, deAdd);
             }
             catch (Exception e){
                 System.out.println("Bad hardware " + e);
@@ -335,13 +348,81 @@ public class Main {
 
             return;
         }
-        if (text.equals("List connections")){
+        if (text.equals("Connect to an existing component")){
+            var dinservice = hardwareService.getAllComponentsNoHW();
+
+            ArrayList<GraphicsCard> graphicsCards = new ArrayList<>();
+            ArrayList<NetworkAdapter> networkAdapters = new ArrayList<>();
+
+            for(var el : dinservice){
+                if(el instanceof  GraphicsCard){
+                    graphicsCards.add((GraphicsCard) el);
+                }
+                if(el instanceof NetworkAdapter){
+                    networkAdapters.add((NetworkAdapter) el);
+                }
+            }
+
+            var checkLen = graphicsCards.size() + networkAdapters.size();
+            if (checkLen == 0){
+                System.out.println("No components added yet");
+                audit.writeToAudit("Attempted to add an existing component");
+                return;
+            }
+
+            for(int i = 0; i<graphicsCards.size(); i++){
+                System.out.println("GraphicsCard " + graphicsCards.get(i).getVideoMemory() + ", id " + i);
+            }
+            for(int i = 0; i<networkAdapters.size(); i++){
+                System.out.println("NetworkAdapter" + networkAdapters.get(i).getNrOfPorts() + ", id " + i);
+            }
+
+            System.out.println("Want to select a graphics card? (0/1)");
+            int isgraph = Integer.parseInt(s.nextLine());
+
+            if (isgraph != 0){
+                System.out.println("Which graphics card? (id mentioned in 'list all')");
+                int poz = Integer.parseInt(s.nextLine());
+                if(poz >= graphicsCards.size() || poz < 0){
+                    System.out.println("Don't know that graphics card");
+                    audit.writeToAudit("Attempted to connect to an existing component");
+                    return;
+                }
+                var deAdd = graphicsCards.get(poz);
+                audit.writeToAudit("Connected to an existing component");
+                hardwareService.addComponent(currentHardw, deAdd);
+            }
+            else {
+                System.out.println("Which network adapter? (id mentioned in 'list all')");
+                int poz = Integer.parseInt(s.nextLine());
+                if(poz >= networkAdapters.size() || poz < 0){
+                    System.out.println("Don't know that network adapter");
+                    audit.writeToAudit("Attempted to connect to an existing component");
+                    return;
+                }
+                var deAdd = networkAdapters.get(poz);
+                audit.writeToAudit("Connected to an existing component");
+                hardwareService.addComponent(currentHardw, deAdd);
+            }
+
+            return;
+        }
+        if (text.equals("List its connections")){
             var dinservice = hardwareService.getAllConnections(currentHardw);
 
             for(var el : dinservice){
                 System.out.println(el.getL() + " " + el.getR());
             }
             audit.writeToAudit("Listed current computer connections");
+            return;
+        }
+        if (text.equals("List its components")){
+            var dinservice = hardwareService.getAllComponents(currentHardw);
+
+            for(var el : dinservice){
+                System.out.println(el.getL() + " " + el.getR());
+            }
+            audit.writeToAudit("Listed current computer components");
             return;
         }
         if (text.equals("Remove connection")){
@@ -365,6 +446,30 @@ public class Main {
             catch (Exception e){
                 System.out.println("Don't know that connection");
                 audit.writeToAudit("Attempted to remove connection");
+            }
+            return;
+        }
+        if (text.equals("Remove component")){
+            try{
+                System.out.println("Which component do you want to remove? (index)");
+                var x = Integer.parseInt(s.nextLine());
+
+                var dinservice = hardwareService.getAllComponents(currentHardw);
+                var poz = -1;
+                for (int i = 0; i< dinservice.size(); i++){
+                    if (dinservice.get(i).getL() == x)
+                        poz = i;
+                }
+                if (poz == -1){
+                    throw new Exception("not a valid int");
+                }
+                hardwareService.removeComponent(currentHardw, poz);
+
+                audit.writeToAudit("Removed a connection");
+            }
+            catch (Exception e){
+                System.out.println("Don't know that component");
+                audit.writeToAudit("Attempted to remove component");
             }
             return;
         }
@@ -406,6 +511,42 @@ public class Main {
             hasGigabit = Objects.equals(s.nextLine(), "1");
 
             Switch rez = new Switch(br, hasGigabit);
+
+            return rez;
+        }
+
+    }
+
+    private PcComponent readComponent(){
+        System.out.println("Graphics Card (0) or Network Adapter (1)? ");
+        boolean isgraph = Integer.parseInt(s.nextLine()) == 0;
+
+        if(isgraph){
+            int vidMemo;
+            boolean forMining;
+            double price;
+
+            System.out.println("video memory:");
+            vidMemo = Integer.parseInt(s.nextLine());
+            System.out.println("is for mining? (0/1):");
+            forMining = Integer.parseInt(s.nextLine()) == 1;
+            System.out.println("price: ");
+            price = Double.parseDouble(s.nextLine());
+
+            GraphicsCard rez = new GraphicsCard(vidMemo, forMining, price);
+
+            return rez;
+        }
+        else {
+            int ports;
+            double price;
+
+            System.out.println("ports:");
+            ports = Integer.parseInt(s.nextLine());
+            System.out.println("price: ");
+            price = Double.parseDouble(s.nextLine());
+
+            NetworkAdapter rez = new NetworkAdapter(ports, price);
 
             return rez;
         }
