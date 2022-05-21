@@ -46,4 +46,14 @@ public class PrinterDTO {
     public void setPagesPerMinute(int pagesPerMinute) {
         this.pagesPerMinute = pagesPerMinute;
     }
+
+    @Override
+    public String toString() {
+        return "PrinterDTO{" +
+                "IP='" + IP + '\'' +
+                ", brand='" + brand + '\'' +
+                ", model='" + model + '\'' +
+                ", pagesPerMinute=" + pagesPerMinute +
+                '}';
+    }
 }

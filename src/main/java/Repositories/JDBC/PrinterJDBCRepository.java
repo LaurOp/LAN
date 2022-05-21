@@ -19,19 +19,19 @@ public class PrinterJDBCRepository {
 
     //C
     public void createNewPrinter(String ip, String br, String mo, int pag) throws SQLException {
-        String sql = "INSERT INTO Printers (ip, brand, model, pagesPerMinute) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO printers (ip, brand, model, pagesPerMinute) VALUES (?, ?, ?, ?)";
 
         PreparedStatement statement = connectionManager.prepareStatement(sql);
         statement.setString(1, ip);
         statement.setString(2, br);
         statement.setString(3, mo);
         statement.setString(4, Integer.toString(pag));
-
+        statement.executeUpdate();
     }
 
     //R
     public List<PrinterDTO> findAllPrinters() throws SQLException {
-        PreparedStatement stmt = connectionManager.prepareStatement("Select * from Printers");
+        PreparedStatement stmt = connectionManager.prepareStatement("Select * from printers");
         ResultSet rs = stmt.executeQuery();
         List<PrinterDTO> result = new ArrayList<>();
         while (rs.next()) {
@@ -49,21 +49,25 @@ public class PrinterJDBCRepository {
 
     //U
     public void updatePrinter(PrinterDTO printer) throws SQLException {
-        String sql = "UPDATE Printers SET brand=?, model=?, pagesPerMinute=? WHERE ip=?";
+        String sql = "UPDATE printers SET brand=?, model=?, pagesPerMinute=? WHERE ip=?";
 
         PreparedStatement statement = connectionManager.prepareStatement(sql);
         statement.setString(1, printer.getBrand());
         statement.setString(2, printer.getModel());
         statement.setString(3, Integer.toString(printer.getPagesPerMinute()));
         statement.setString(4, printer.getIP());
+
+        statement.executeUpdate();
     }
 
     //D
     public void deletePrinter(PrinterDTO printer) throws SQLException{
-        String sql = "DELETE FROM Printers WHERE ip=?";
+        String sql = "DELETE FROM printers WHERE ip=?";
 
         PreparedStatement statement = connectionManager.prepareStatement(sql);
         statement.setString(1, printer.getIP());
+
+        statement.executeUpdate();
     }
 
 
