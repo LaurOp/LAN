@@ -84,37 +84,38 @@ public class Main {
         reader.readNetworkAdapters("src/main/resources/Seeders/networkadapterSeed.txt");
     }
 
-    public static void main(String[] args) throws SQLException {
-        PrinterJDBCRepository printerJDBCRepository = new PrinterJDBCRepository(man);
-
-        printerJDBCRepository.createNewPrinter("1.1.1.1", "brand1", "model1", 24);
-
-
-        var rez = printerJDBCRepository.findAllPrinters();
-        System.out.println(rez.size());
-        for(var pr : rez){
-            System.out.println(pr);
-        }
-    }
-
-//    public static void main(String[] args) throws IOException, SQLException, ClassNotFoundException {
-//        Main menu = new Main();
-//        boolean exitcond = true;
-//        audit.writeToAudit("Opening app");
-//        while(exitcond){
-//            try{
-//                menu.printInteractiveMenu();
-//                int option = menu.getOption();
-//                menu.pick(optionsText[option-1]);
-//            }
-//            catch (Exception e){
-//                System.out.println(e);
-//                exitcond = false;
-//            }
+    // PROBA PT JDBC
+//    public static void main(String[] args) throws SQLException {
+//        PrinterJDBCRepository printerJDBCRepository = new PrinterJDBCRepository(man);
+//
+//        printerJDBCRepository.createNewPrinter("1.1.1.1", "brand1", "model1", 24);
+//
+//
+//        var rez = printerJDBCRepository.findAllPrinters();
+//        System.out.println(rez.size());
+//        for(var pr : rez){
+//            System.out.println(pr);
 //        }
-//        audit.writeToAudit("Closing app");
-//        audit.closeStream();
 //    }
+
+    public static void main(String[] args) throws IOException, SQLException, ClassNotFoundException {
+        Main menu = new Main();
+        boolean exitcond = true;
+        audit.writeToAudit("Opening app");
+        while(exitcond){
+            try{
+                menu.printInteractiveMenu();
+                int option = menu.getOption();
+                menu.pick(optionsText[option-1]);
+            }
+            catch (Exception e){
+                System.out.println(e);
+                exitcond = false;
+            }
+        }
+        audit.writeToAudit("Closing app");
+        audit.closeStream();
+    }
 
     public void printInteractiveMenu(){
         System.out.println("Choose between:");
