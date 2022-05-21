@@ -1,4 +1,4 @@
-package Entities.Hardware;
+package Entities.Models.Hardware;
 
 public class GraphicsCard  extends PcComponent {
 

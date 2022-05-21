@@ -1,4 +1,4 @@
-package Entities.Hardware;
+package Entities.Models.Hardware;
 
 import java.util.Objects;
 

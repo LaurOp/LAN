@@ -1,4 +1,4 @@
-package Entities.Hardware;
+package Entities.Models.Hardware;
 
 import Services.ConnectableService;
 
@@ -6,20 +6,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class Printer implements Connectable {
+public class Switch implements Connectable {
 
-    private final int nrPorts = 2;
-    private List<String> connectedTo;
+    private final int nrPorts = 24;
     private final String IP;
     private String brand;
-    private String model;
-    private int pagesPerMinute;
+    private boolean gigabitEthernet;
+    private List<String> connectedTo;
 
     private ConnectableService service = new ConnectableService();
-
-    public String getIP() {
-        return IP;
-    }
 
     public List<String> getConnectedTo() {
         return connectedTo;
@@ -29,24 +24,25 @@ public class Printer implements Connectable {
         this.connectedTo = connectedTo;
     }
 
+    public String getIP() {
+        return IP;
+    }
+
     {
         Random r = new Random();
         this.IP = r.nextInt(256) + "." + r.nextInt(256) + "." + r.nextInt(256) + "." + r.nextInt(256);
+    }
 
+    public Switch() {
+        this.brand = "noname";
+        this.gigabitEthernet = false;
         this.connectedTo = new ArrayList<>();
     }
 
-    public Printer() {
-        this.brand = "HP";
-        this.model = "unu";
-        this.pagesPerMinute = 10;
-
-    }
-
-    public Printer(String brand, String model) {
+    public Switch(String brand, boolean gigabitEthernet) {
         this.brand = brand;
-        this.model = model;
-        this.pagesPerMinute = 10;
+        this.gigabitEthernet = gigabitEthernet;
+        this.connectedTo = new ArrayList<>();
     }
 
     @Override
@@ -68,4 +64,5 @@ public class Printer implements Connectable {
     public Integer ping(String ip) {
         return service.ping(this, ip);
     }
+
 }

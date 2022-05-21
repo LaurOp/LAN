@@ -1,4 +1,6 @@
-package Entities;
+package Entities.Models;
+
+import Entities.Models.Computer;
 
 import java.util.ArrayList;
 

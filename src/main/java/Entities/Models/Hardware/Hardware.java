@@ -1,5 +1,4 @@
-package Entities.Hardware;
-import java.nio.charset.Charset;
+package Entities.Models.Hardware;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashSet;

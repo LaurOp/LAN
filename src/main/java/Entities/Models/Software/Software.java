@@ -1,4 +1,4 @@
-package Entities.Software;
+package Entities.Models.Software;
 
 public interface Software {
     // TODO

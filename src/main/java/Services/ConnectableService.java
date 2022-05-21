@@ -1,11 +1,11 @@
 package Services;
 
-import Entities.Hardware.Connectable;
-import Entities.Hardware.Hardware;
-import Entities.Hardware.Printer;
-import Entities.Hardware.Switch;
-import Repositories.ConnectableRepository;
-import Repositories.HardwareRepository;
+import Entities.Models.Hardware.Connectable;
+import Entities.Models.Hardware.Hardware;
+import Entities.Models.Hardware.Printer;
+import Entities.Models.Hardware.Switch;
+import Repositories.NO_JDBC.ConnectableRepository;
+import Repositories.NO_JDBC.HardwareRepository;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package Entities.Hardware;
+package Entities.Models.Hardware;
 
 public class NetworkAdapter extends PcComponent {
 

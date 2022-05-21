@@ -1,4 +1,4 @@
-package Entities.Hardware;
+package Entities.Models.Hardware;
 
 import Services.ConnectableService;
 
@@ -6,15 +6,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class Switch implements Connectable {
+public class Printer implements Connectable {
 
-    private final int nrPorts = 24;
+    private final int nrPorts = 2;
+    private List<String> connectedTo;
     private final String IP;
     private String brand;
-    private boolean gigabitEthernet;
-    private List<String> connectedTo;
+    private String model;
+    private int pagesPerMinute;
 
     private ConnectableService service = new ConnectableService();
+
+    public String getIP() {
+        return IP;
+    }
 
     public List<String> getConnectedTo() {
         return connectedTo;
@@ -24,25 +29,24 @@ public class Switch implements Connectable {
         this.connectedTo = connectedTo;
     }
 
-    public String getIP() {
-        return IP;
-    }
-
     {
         Random r = new Random();
         this.IP = r.nextInt(256) + "." + r.nextInt(256) + "." + r.nextInt(256) + "." + r.nextInt(256);
-    }
 
-    public Switch() {
-        this.brand = "noname";
-        this.gigabitEthernet = false;
         this.connectedTo = new ArrayList<>();
     }
 
-    public Switch(String brand, boolean gigabitEthernet) {
+    public Printer() {
+        this.brand = "HP";
+        this.model = "unu";
+        this.pagesPerMinute = 10;
+
+    }
+
+    public Printer(String brand, String model) {
         this.brand = brand;
-        this.gigabitEthernet = gigabitEthernet;
-        this.connectedTo = new ArrayList<>();
+        this.model = model;
+        this.pagesPerMinute = 10;
     }
 
     @Override
@@ -63,6 +67,18 @@ public class Switch implements Connectable {
     @Override
     public Integer ping(String ip) {
         return service.ping(this, ip);
+    }
+
+    public void setBrand(String brand) {
+        this.brand = brand;
+    }
+
+    public void setModel(String model) {
+        this.model = model;
+    }
+
+    public void setPagesPerMinute(int pagesPerMinute) {
+        this.pagesPerMinute = pagesPerMinute;
     }
 
 }

@@ -1,12 +1,12 @@
 package Services.IO;
 
-import Entities.Hardware.*;
-import Repositories.ConnectableRepository;
-import Repositories.HardwareRepository;
-import Repositories.PcComponentRepository;
+
+import Entities.Models.Hardware.*;
+import Repositories.NO_JDBC.ConnectableRepository;
+import Repositories.NO_JDBC.HardwareRepository;
+import Repositories.NO_JDBC.PcComponentRepository;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 

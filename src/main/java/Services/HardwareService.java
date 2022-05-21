@@ -1,12 +1,12 @@
 package Services;
 
-import Entities.Hardware.*;
-import Repositories.ConnectableRepository;
-import Repositories.HardwareRepository;
-import Repositories.PcComponentRepository;
+
+import Entities.Models.Hardware.*;
+import Repositories.NO_JDBC.ConnectableRepository;
+import Repositories.NO_JDBC.HardwareRepository;
+import Repositories.NO_JDBC.PcComponentRepository;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 

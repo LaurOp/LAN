@@ -1,7 +1,7 @@
-import Entities.Computer;
-import Entities.Hardware.GraphicsCard;
-import Entities.Hardware.Hardware;
-import Entities.Hardware.NetworkAdapter;
+import Entities.Models.Computer;
+import Entities.Models.Hardware.GraphicsCard;
+import Entities.Models.Hardware.Hardware;
+import Entities.Models.Hardware.NetworkAdapter;
 import Services.ConnectableService;
 import Services.HardwareService;
 import org.testng.annotations.Test;

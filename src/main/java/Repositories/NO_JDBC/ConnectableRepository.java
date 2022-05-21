@@ -1,7 +1,10 @@
-package Repositories;
+package Repositories.NO_JDBC;
 
-import Entities.Hardware.*;
-import org.testng.internal.collections.Pair;
+
+import Entities.Models.Hardware.Connectable;
+import Entities.Models.Hardware.Printer;
+import Entities.Models.Hardware.Switch;
+import Repositories.GenericRepository;
 
 import java.util.ArrayList;
 import java.util.HashMap;

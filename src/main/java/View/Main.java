@@ -1,24 +1,24 @@
 package View;
 
-import Entities.Computer;
-import Entities.Hardware.*;
-import Entities.Network;
-import Entities.Software.Software;
+import Entities.Models.Computer;
+import Entities.Models.Hardware.*;
+import Entities.Models.Network;
+import Entities.Models.Software.Software;
 import Exceptions.BadDataTypeException;
-import Repositories.ComputerRepository;
-import Repositories.HardwareRepository;
-import Repositories.NetworkRepository;
+import Repositories.NO_JDBC.ComputerRepository;
+import Repositories.NO_JDBC.HardwareRepository;
+import Repositories.NO_JDBC.NetworkRepository;
 import Services.ComputerService;
 import Services.ConnectableService;
 import Services.HardwareService;
-import Services.HardwareService.*;
 import Services.IO.Reader;
 import Services.IO.Writer;
+import Services.JDBC.ConnectionManager;
 import Services.NetworkService;
-import org.testng.annotations.Test;
-import org.testng.internal.collections.Pair;
+import org.testng.annotations.AfterMethod;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.*;
 
 public class Main {
@@ -30,9 +30,18 @@ public class Main {
     private ComputerService computerService = new ComputerService();
     private HardwareService hardwareService = new HardwareService();
 
+    // NO JDBC
     private NetworkRepository networkRepository = new NetworkRepository();
     private ComputerRepository computerRepository = new ComputerRepository();
     private HardwareRepository hardwareRepository = new HardwareRepository();
+
+    //JDBC
+    ConnectionManager man = new ConnectionManager("jdbc:mysql://localhost:3306/pao","root","laur");
+
+    @AfterMethod
+    public void closeConn() throws SQLException {
+        man.close();
+    }
 
     private static int[] options;
     private static String[] optionsText;
@@ -51,7 +60,7 @@ public class Main {
         }
     }
 
-    public Main() throws IOException {
+    public Main() throws IOException, SQLException, ClassNotFoundException {
         options = new int[]{1, 2, 3, 4};
         optionsText = new String[]{"Add new network", "List all networks", "Edit a network", "Exit"};
 
@@ -62,7 +71,7 @@ public class Main {
         reader.readNetworkAdapters("src/main/resources/Seeders/networkadapterSeed.txt");
     }
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, SQLException, ClassNotFoundException {
         Main menu = new Main();
         boolean exitcond = true;
         audit.writeToAudit("Opening app");

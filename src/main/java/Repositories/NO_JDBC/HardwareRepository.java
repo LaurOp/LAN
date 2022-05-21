@@ -1,7 +1,7 @@
-package Repositories;
+package Repositories.NO_JDBC;
 
-import Entities.Hardware.Hardware;
-import Entities.Network;
+import Entities.Models.Hardware.Hardware;
+import Repositories.GenericRepository;
 
 import java.util.Arrays;
 

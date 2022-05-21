@@ -1,10 +1,7 @@
-package Repositories;
+package Repositories.NO_JDBC;
 
-import Entities.Computer;
-import Entities.Hardware.Connectable;
-import Entities.Hardware.Printer;
-import Entities.Hardware.Switch;
-import Entities.Network;
+import Entities.Models.Computer;
+import Repositories.GenericRepository;
 
 import java.util.Arrays;
 

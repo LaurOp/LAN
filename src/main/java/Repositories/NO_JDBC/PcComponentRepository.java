@@ -1,8 +1,10 @@
-package Repositories;
+package Repositories.NO_JDBC;
 
-import Entities.Hardware.*;
-import Entities.Network;
-import org.testng.internal.collections.Pair;
+
+import Entities.Models.Hardware.GraphicsCard;
+import Entities.Models.Hardware.NetworkAdapter;
+import Entities.Models.Hardware.PcComponent;
+import Repositories.GenericRepository;
 
 import java.util.ArrayList;
 import java.util.HashMap;

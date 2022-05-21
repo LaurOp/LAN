@@ -1,7 +1,7 @@
-package Entities;
+package Entities.Models;
 
-import Entities.Hardware.Hardware;
-import Entities.Software.Software;
+import Entities.Models.Hardware.Hardware;
+import Entities.Models.Software.Software;
 
 public class Computer {
 

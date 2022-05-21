@@ -1,9 +1,9 @@
 package Services;
 
-import Entities.Computer;
-import Entities.Hardware.Hardware;
-import Entities.Software.Software;
-import Repositories.ComputerRepository;
+import Entities.Models.Computer;
+import Entities.Models.Hardware.Hardware;
+import Entities.Models.Software.Software;
+import Repositories.NO_JDBC.ComputerRepository;
 
 import java.util.ArrayList;
 

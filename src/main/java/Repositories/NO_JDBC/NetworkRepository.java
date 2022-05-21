@@ -1,11 +1,9 @@
-package Repositories;
+package Repositories.NO_JDBC;
 
-import Entities.Network;
+import Entities.Models.Network;
+import Repositories.GenericRepository;
 
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
 
 public class NetworkRepository implements GenericRepository<Network> {
 

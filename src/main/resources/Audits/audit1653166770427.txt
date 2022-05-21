@@ -1,0 +1,15 @@
+Opening app 2022-05-21 23:59:30.467
+Added new network 2022-05-21 23:59:32.304
+Added a new computer to a network 2022-05-21 23:59:34.222
+Listed all network computers 2022-05-21 23:59:35.614
+Removed computer from network 2022-05-21 23:59:39.421
+Added new network 2022-05-21 23:59:43.382
+Added a new computer to a network 2022-05-21 23:59:46.622
+Editing a computer 2022-05-21 23:59:49.813
+Chose software 2022-05-21 23:59:54.365
+Chose hardware 2022-05-21 23:59:55.885
+Chose components 2022-05-21 23:59:58.061
+Added a new connectable 2022-05-22 00:00:05.677
+Listed current computer components 2022-05-22 00:00:08.744
+Listed all network computers 2022-05-22 00:00:14.069
+Closing app 2022-05-22 00:00:16.373
