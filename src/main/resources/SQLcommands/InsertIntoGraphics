@@ -1,0 +1,11 @@
+INSERT INTO `pao`.`graphics`(name,video,mine,price) VALUES ("Graphics",300,0,1767);
+INSERT INTO `pao`.`graphics`(name,video,mine,price) VALUES ("Graphics",957,1,2770);
+INSERT INTO `pao`.`graphics`(name,video,mine,price) VALUES ("Graphics",584,0,2972);
+INSERT INTO `pao`.`graphics`(name,video,mine,price) VALUES ("Graphics",715,1,463);
+INSERT INTO `pao`.`graphics`(name,video,mine,price) VALUES ("Graphics",818,0,2683);
+INSERT INTO `pao`.`graphics`(name,video,mine,price) VALUES ("Graphics",587,1,2557);
+INSERT INTO `pao`.`graphics`(name,video,mine,price) VALUES ("Graphics",690,1,1743);
+INSERT INTO `pao`.`graphics`(name,video,mine,price) VALUES ("Graphics",908,0,2525);
+INSERT INTO `pao`.`graphics`(name,video,mine,price) VALUES ("Graphics",526,0,876);
+INSERT INTO `pao`.`graphics`(name,video,mine,price) VALUES ("Graphics",228,1,539);
+

@@ -1,0 +1,10 @@
+INSERT INTO `pao`.`nadapters`(`ports`, `price`) VALUES(5,57);
+INSERT INTO `pao`.`nadapters`(`ports`, `price`) VALUES(6,204);
+INSERT INTO `pao`.`nadapters`(`ports`, `price`) VALUES(3,212);
+INSERT INTO `pao`.`nadapters`(`ports`, `price`) VALUES(11,246);
+INSERT INTO `pao`.`nadapters`(`ports`, `price`) VALUES(14,108);
+INSERT INTO `pao`.`nadapters`(`ports`, `price`) VALUES(16,155);
+INSERT INTO `pao`.`nadapters`(`ports`, `price`) VALUES(10,139);
+INSERT INTO `pao`.`nadapters`(`ports`, `price`) VALUES(18,67);
+INSERT INTO `pao`.`nadapters`(`ports`, `price`) VALUES(7,179);
+INSERT INTO `pao`.`nadapters`(`ports`, `price`) VALUES(17,204);

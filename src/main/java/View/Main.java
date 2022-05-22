@@ -1,6 +1,7 @@
 package View;
 
 import Entities.DTOs.GraphicsCardDTO;
+import Entities.DTOs.NAdapterDTO;
 import Entities.DTOs.PrinterDTO;
 import Entities.DTOs.SwitchDTO;
 import Entities.Models.Computer;
@@ -9,6 +10,7 @@ import Entities.Models.Network;
 import Entities.Models.Software.Software;
 import Exceptions.BadDataTypeException;
 import Repositories.JDBC.GraphicsCardJDBCRepository;
+import Repositories.JDBC.NAdapterJDBCRepository;
 import Repositories.JDBC.PrinterJDBCRepository;
 import Repositories.JDBC.SwitchJDBCRepository;
 import Repositories.NO_JDBC.ComputerRepository;
@@ -100,7 +102,7 @@ public class Main {
         reader.readNetworkAdapters("src/main/resources/Seeders/networkadapterSeed.txt");
     }
 
-    // PROBA PT JDBC
+//    // PROBA PT JDBC
 //    public static void main(String[] args) throws SQLException {
 //// Printer:
 ////        PrinterJDBCRepository printerJDBCRepository = new PrinterJDBCRepository(man);
@@ -146,6 +148,24 @@ public class Main {
 ////        graphicsCardJDBCRepository.updateGraphics(rez2.get(0), new GraphicsCardDTO(500, true, 2999));
 ////        rez2 = graphicsCardJDBCRepository.getGraphicsByName("Graphics500");
 ////        graphicsCardJDBCRepository.deleteGraphics(rez2.get(0));
+//
+//
+////NetworkAdapter:
+////
+////        NAdapterJDBCRepository nAdapterJDBCRepository = new NAdapterJDBCRepository(man);
+////        nAdapterJDBCRepository.createNewAdapter(3, 200);
+////
+////        var rez = nAdapterJDBCRepository.findAllAdapters();
+////        for(var n : rez){
+////            System.out.println(n);
+////        }
+////
+////        nAdapterJDBCRepository.updateAdaptersPorts(rez.get(0), 8);
+////        nAdapterJDBCRepository.updateAdaptersPrice(rez.get(1), 150);
+////
+////        nAdapterJDBCRepository.deleteAdaptersByPrice(new NAdapterDTO(0, 1000));
+////        nAdapterJDBCRepository.deleteAdaptersByPorts(new NAdapterDTO(8, 50));
+////        nAdapterJDBCRepository.deleteAdaptersByPorts(new NAdapterDTO(2, 50));
 //
 //    }
 
