@@ -1,9 +1,5 @@
 package View;
 
-import Entities.DTOs.GraphicsCardDTO;
-import Entities.DTOs.NAdapterDTO;
-import Entities.DTOs.PrinterDTO;
-import Entities.DTOs.SwitchDTO;
 import Entities.Models.Computer;
 import Entities.Models.Hardware.*;
 import Entities.Models.Network;
@@ -28,7 +24,6 @@ import org.testng.annotations.AfterMethod;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.*;
 
 
@@ -67,8 +62,8 @@ public class Main {
         man.close();
     }
 
-    private static int[] options;
-    private static String[] optionsText;
+    protected static int[] options;
+    protected static String[] optionsText;
 
     static Network currentNet;
     static Computer currentComp;
@@ -130,7 +125,21 @@ public class Main {
             jdbcAudit.writeToAudit("Closing app");
         }
         else{
-
+            JDBCmenu menu = new JDBCmenu(man);
+            boolean exitcond = true;
+            jdbcAudit.writeToAudit("Opening app");
+            while(exitcond){
+                try{
+                    menu.printInteractiveMenu();
+                    int option = menu.getOption();
+                    menu.pickJDBC(optionsText[option-1]);
+                }
+                catch (Exception e){
+                    System.out.println(e);
+                    exitcond = false;
+                }
+            }
+            jdbcAudit.writeToAudit("Closing app");
         }
 
     }
@@ -144,7 +153,7 @@ public class Main {
 
     }
 
-    private int getOption() {
+    protected int getOption() {
         try {
             int option = Integer.parseInt(s.nextLine());
             if (option >= 1 && option <= options.length) {
@@ -642,3 +651,4 @@ public class Main {
 
     }
 }
+

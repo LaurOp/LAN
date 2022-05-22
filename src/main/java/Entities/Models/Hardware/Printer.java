@@ -49,6 +49,12 @@ public class Printer implements Connectable {
         this.pagesPerMinute = 10;
     }
 
+    public Printer(String brand, String model, int pagesPerMinute) {
+        this.brand = brand;
+        this.model = model;
+        this.pagesPerMinute = pagesPerMinute;
+    }
+
     public Printer(String IP, String brand, String model, int pagesPerMinute) {
         this.IP = IP;
         this.brand = brand;
@@ -108,6 +114,13 @@ public class Printer implements Connectable {
         this.pagesPerMinute = pagesPerMinute;
     }
 
-
-
+    @Override
+    public String toString() {
+        return "Printer{" +
+                "IP='" + IP + '\'' +
+                ", brand='" + brand + '\'' +
+                ", model='" + model + '\'' +
+                ", pagesPerMinute=" + pagesPerMinute +
+                '}';
+    }
 }
