@@ -1,11 +1,13 @@
 package View;
 
+import Entities.DTOs.PrinterDTO;
 import Entities.Models.Computer;
 import Entities.Models.Hardware.*;
 import Entities.Models.Network;
 import Entities.Models.Software.Software;
 import Exceptions.BadDataTypeException;
 import Repositories.JDBC.PrinterJDBCRepository;
+import Repositories.JDBC.SwitchJDBCRepository;
 import Repositories.NO_JDBC.ComputerRepository;
 import Repositories.NO_JDBC.HardwareRepository;
 import Repositories.NO_JDBC.NetworkRepository;
@@ -20,6 +22,7 @@ import org.testng.annotations.AfterMethod;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.*;
 
 
@@ -85,37 +88,45 @@ public class Main {
     }
 
     // PROBA PT JDBC
-//    public static void main(String[] args) throws SQLException {
+    public static void main(String[] args) throws SQLException {
+// Printer:
 //        PrinterJDBCRepository printerJDBCRepository = new PrinterJDBCRepository(man);
-//
 //        printerJDBCRepository.createNewPrinter("1.1.1.1", "brand1", "model1", 24);
+//        var rez = printerJDBCRepository.getPrinterByIP("1.1.1.1");
+//        System.out.println(rez);
+//        printerJDBCRepository.updatePrinter(rez, new PrinterDTO("2.2.2.2", "brand2", "model2", 26));
 //
+//        rez = printerJDBCRepository.getPrinterByIP("1.1.1.1");
+//        System.out.println(rez);
 //
-//        var rez = printerJDBCRepository.findAllPrinters();
-//        System.out.println(rez.size());
-//        for(var pr : rez){
-//            System.out.println(pr);
-//        }
-//    }
+//        printerJDBCRepository.deletePrinter(rez);
+//
+//        var listrez = printerJDBCRepository.findAllPrinters();
 
-    public static void main(String[] args) throws IOException, SQLException, ClassNotFoundException {
-        Main menu = new Main();
-        boolean exitcond = true;
-        audit.writeToAudit("Opening app");
-        while(exitcond){
-            try{
-                menu.printInteractiveMenu();
-                int option = menu.getOption();
-                menu.pick(optionsText[option-1]);
-            }
-            catch (Exception e){
-                System.out.println(e);
-                exitcond = false;
-            }
-        }
-        audit.writeToAudit("Closing app");
-        audit.closeStream();
+
+        SwitchJDBCRepository switchJDBCRepository = new SwitchJDBCRepository(man);
+        switchJDBCRepository.createNewSwitch("1.1.1.1","brand1", true);
+
     }
+
+//    public static void main(String[] args) throws IOException, SQLException, ClassNotFoundException {
+//        Main menu = new Main();
+//        boolean exitcond = true;
+//        audit.writeToAudit("Opening app");
+//        while(exitcond){
+//            try{
+//                menu.printInteractiveMenu();
+//                int option = menu.getOption();
+//                menu.pick(optionsText[option-1]);
+//            }
+//            catch (Exception e){
+//                System.out.println(e);
+//                exitcond = false;
+//            }
+//        }
+//        audit.writeToAudit("Closing app");
+//        audit.closeStream();
+//    }
 
     public void printInteractiveMenu(){
         System.out.println("Choose between:");

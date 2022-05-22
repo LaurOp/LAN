@@ -7,6 +7,7 @@ import Services.JDBC.ConnectionManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,7 +27,13 @@ public class PrinterJDBCRepository {
         statement.setString(2, br);
         statement.setString(3, mo);
         statement.setString(4, Integer.toString(pag));
-        statement.executeUpdate();
+
+        try {
+            statement.executeUpdate();
+        }catch (SQLIntegrityConstraintViolationException e){
+            System.out.println("Already in database!");
+        }
+
     }
 
     //R
@@ -36,7 +43,7 @@ public class PrinterJDBCRepository {
         List<PrinterDTO> result = new ArrayList<>();
         while (rs.next()) {
             PrinterDTO p = new PrinterDTO();
-            p.setBrand(rs.getString("ip"));
+            p.setIP(rs.getString("ip"));
             p.setBrand(rs.getString("brand"));
             p.setModel(rs.getString("model"));
             p.setPagesPerMinute(rs.getInt("pagesPerMinute"));
@@ -46,18 +53,42 @@ public class PrinterJDBCRepository {
         return result;
     }
 
+    public PrinterDTO getPrinterByIP(String ip) throws SQLException {
+        PreparedStatement stmt = connectionManager.prepareStatement("Select * from printers WHERE ip=?");
+        stmt.setString(1, ip);
+        ResultSet rs = stmt.executeQuery();
+        try {
+            rs.next();
+            PrinterDTO p = new PrinterDTO();
+            p.setIP(rs.getString("ip"));
+            p.setBrand(rs.getString("brand"));
+            p.setModel(rs.getString("model"));
+            p.setPagesPerMinute(rs.getInt("pagesPerMinute"));
+            return p;
+        }
+        catch (Exception e){
+            System.out.println("Not in the database!");
+            return new PrinterDTO();
+        }
+    }
+
 
     //U
-    public void updatePrinter(PrinterDTO printer) throws SQLException {
+    public void updatePrinter(PrinterDTO printerToChange, PrinterDTO printer) throws SQLException {
         String sql = "UPDATE printers SET brand=?, model=?, pagesPerMinute=? WHERE ip=?";
 
         PreparedStatement statement = connectionManager.prepareStatement(sql);
         statement.setString(1, printer.getBrand());
         statement.setString(2, printer.getModel());
         statement.setString(3, Integer.toString(printer.getPagesPerMinute()));
-        statement.setString(4, printer.getIP());
+        statement.setString(4, printerToChange.getIP());
 
-        statement.executeUpdate();
+        try {
+            statement.executeUpdate();
+        }
+        catch (Exception e){
+            System.out.println("Not in the database!");
+        }
     }
 
     //D
@@ -67,7 +98,12 @@ public class PrinterJDBCRepository {
         PreparedStatement statement = connectionManager.prepareStatement(sql);
         statement.setString(1, printer.getIP());
 
-        statement.executeUpdate();
+        try {
+            statement.executeUpdate();
+        }
+        catch (Exception e){
+            System.out.println("Not in the database!");
+        }
     }
 
 

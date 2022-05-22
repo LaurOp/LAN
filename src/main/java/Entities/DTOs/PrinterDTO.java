@@ -1,8 +1,5 @@
 package Entities.DTOs;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 
 public class PrinterDTO {
     private String IP;
@@ -10,9 +7,18 @@ public class PrinterDTO {
     private String model;
     private int pagesPerMinute;
 
-    {
-        Random r = new Random();
-        this.IP = r.nextInt(256) + "." + r.nextInt(256) + "." + r.nextInt(256) + "." + r.nextInt(256);
+    public PrinterDTO() {
+        this.IP = "";
+        this.brand = "";
+        this.model = "";
+        this.pagesPerMinute = 0;
+    }
+
+    public PrinterDTO(String IP, String brand, String model, int pagesPerMinute) {
+        this.IP = IP;
+        this.brand = brand;
+        this.model = model;
+        this.pagesPerMinute = pagesPerMinute;
     }
 
     public String getIP() {
