@@ -1,0 +1,10 @@
+INSERT INTO pao.switches VALUES('167.91.1.107', 'OIi', 0);
+INSERT INTO pao.switches VALUES('212.36.67.101', 'ORE', 0);
+INSERT INTO pao.switches VALUES('170.199.184.120', 'BvPIVv', 0);
+INSERT INTO pao.switches VALUES('163.188.244.180', 'VpZXPZ', 1);
+INSERT INTO pao.switches VALUES('133.31.84.140', 'tKtA', 1);
+INSERT INTO pao.switches VALUES('61.74.160.24', 'ctkutp', 0);
+INSERT INTO pao.switches VALUES('149.242.17.123', 'kAr', 1);
+INSERT INTO pao.switches VALUES('228.156.243.223', 'Sgt', 0);
+INSERT INTO pao.switches VALUES('152.185.189.177', 'tebv', 1);
+INSERT INTO pao.switches VALUES('121.33.166.98', 'SuoR', 1);

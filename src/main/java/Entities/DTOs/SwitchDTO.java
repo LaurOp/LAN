@@ -5,6 +5,18 @@ public class SwitchDTO {
     private String brand;
     private boolean gigabitEthernet;
 
+    public SwitchDTO() {
+        this.IP = "";
+        this.brand = "";
+        this.gigabitEthernet = false;
+    }
+
+    public SwitchDTO(String IP, String brand, boolean gigabitEthernet) {
+        this.IP = IP;
+        this.brand = brand;
+        this.gigabitEthernet = gigabitEthernet;
+    }
+
     public String getIP() {
         return IP;
     }

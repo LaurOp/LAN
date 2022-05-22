@@ -1,11 +1,14 @@
 package View;
 
+import Entities.DTOs.GraphicsCardDTO;
 import Entities.DTOs.PrinterDTO;
+import Entities.DTOs.SwitchDTO;
 import Entities.Models.Computer;
 import Entities.Models.Hardware.*;
 import Entities.Models.Network;
 import Entities.Models.Software.Software;
 import Exceptions.BadDataTypeException;
+import Repositories.JDBC.GraphicsCardJDBCRepository;
 import Repositories.JDBC.PrinterJDBCRepository;
 import Repositories.JDBC.SwitchJDBCRepository;
 import Repositories.NO_JDBC.ComputerRepository;
@@ -17,6 +20,7 @@ import Services.HardwareService;
 import Services.IO.Reader;
 import Services.IO.Writer;
 import Services.JDBC.ConnectionManager;
+import Services.JDBC.JDBC_IO.JDBCaudit;
 import Services.NetworkService;
 import org.testng.annotations.AfterMethod;
 
@@ -31,25 +35,25 @@ public class Main {
 
     private Scanner s = new Scanner(System.in);
 
-    private ConnectableService connectableService = new ConnectableService();
-    private NetworkService networkService = new NetworkService();
-    private ComputerService computerService = new ComputerService();
-    private HardwareService hardwareService = new HardwareService();
+    private final ConnectableService connectableService = new ConnectableService();
+    private final NetworkService networkService = new NetworkService();
+    private final ComputerService computerService = new ComputerService();
+    private final HardwareService hardwareService = new HardwareService();
 
     // NO JDBC
-    private NetworkRepository networkRepository = new NetworkRepository();
-    private ComputerRepository computerRepository = new ComputerRepository();
-    private HardwareRepository hardwareRepository = new HardwareRepository();
+    private final NetworkRepository networkRepository = new NetworkRepository();
+    private final ComputerRepository computerRepository = new ComputerRepository();
+    private final HardwareRepository hardwareRepository = new HardwareRepository();
 
     //JDBC
     static ConnectionManager man;
+    private final PrinterJDBCRepository printerJDBCRepository = new PrinterJDBCRepository(man);
+    private final SwitchJDBCRepository switchJDBCRepository = new SwitchJDBCRepository(man);
 
     static {
         try {
             man = new ConnectionManager("jdbc:mysql://localhost:3306/pao","root","laur");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (SQLException e) {
+        } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }
     }
@@ -67,10 +71,19 @@ public class Main {
     static Hardware currentHardw;
 
     static Writer audit;
+    static JDBCaudit jdbcAudit;
 
     static {
         try {
             audit = Writer.getInstance();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    static {
+        try {
+            jdbcAudit = JDBCaudit.getInstance(man);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -88,31 +101,59 @@ public class Main {
     }
 
     // PROBA PT JDBC
-    public static void main(String[] args) throws SQLException {
-// Printer:
-//        PrinterJDBCRepository printerJDBCRepository = new PrinterJDBCRepository(man);
-//        printerJDBCRepository.createNewPrinter("1.1.1.1", "brand1", "model1", 24);
-//        var rez = printerJDBCRepository.getPrinterByIP("1.1.1.1");
-//        System.out.println(rez);
-//        printerJDBCRepository.updatePrinter(rez, new PrinterDTO("2.2.2.2", "brand2", "model2", 26));
+//    public static void main(String[] args) throws SQLException {
+//// Printer:
+////        PrinterJDBCRepository printerJDBCRepository = new PrinterJDBCRepository(man);
+////        printerJDBCRepository.createNewPrinter("1.1.1.1", "brand1", "model1", 24);
+////        var rez = printerJDBCRepository.getPrinterByIP("1.1.1.1");
+////        System.out.println(rez);
+////        printerJDBCRepository.updatePrinter(rez, new PrinterDTO("2.2.2.2", "brand2", "model2", 26));
+////
+////        rez = printerJDBCRepository.getPrinterByIP("1.1.1.1");
+////        System.out.println(rez);
+////
+////        printerJDBCRepository.deletePrinter(rez);
+////
+////        var listrez = printerJDBCRepository.findAllPrinters();
 //
-//        rez = printerJDBCRepository.getPrinterByIP("1.1.1.1");
-//        System.out.println(rez);
+//// Switch:
+////        SwitchJDBCRepository switchJDBCRepository = new SwitchJDBCRepository(man);
+////        switchJDBCRepository.createNewSwitch("1.1.1.1","brand1", true);
+////
+////        var rez = switchJDBCRepository.findAllSwitches();
+////        for(var s : rez){
+////            System.out.println(s);
+////        }
+////        var rez2 = switchJDBCRepository.getSwitchByIP("1.1.1.1");
+////        System.out.println(rez2);
+////
+////        switchJDBCRepository.updateSwitch(rez2, new SwitchDTO("2.2.2.2","brand2",true));
+////        rez2 = switchJDBCRepository.getSwitchByIP("21.1.1.1");
+////        switchJDBCRepository.deleteSwitch(rez2);
 //
-//        printerJDBCRepository.deletePrinter(rez);
 //
-//        var listrez = printerJDBCRepository.findAllPrinters();
-
-
-        SwitchJDBCRepository switchJDBCRepository = new SwitchJDBCRepository(man);
-        switchJDBCRepository.createNewSwitch("1.1.1.1","brand1", true);
-
-    }
+////GraphicsCard:
+////        GraphicsCardJDBCRepository graphicsCardJDBCRepository = new GraphicsCardJDBCRepository(man);
+////        graphicsCardJDBCRepository.createNewGraphics(256, false, 2000);
+////
+////        var rez = graphicsCardJDBCRepository.findAllGraphics();
+////        for (var g : rez){
+////            System.out.println(g);
+////        }
+////
+////        var rez2 = graphicsCardJDBCRepository.getGraphicsByName("Graphics256");
+////
+////        graphicsCardJDBCRepository.updateGraphics(rez2.get(0), new GraphicsCardDTO(500, true, 2999));
+////        rez2 = graphicsCardJDBCRepository.getGraphicsByName("Graphics500");
+////        graphicsCardJDBCRepository.deleteGraphics(rez2.get(0));
+//
+//    }
 
 //    public static void main(String[] args) throws IOException, SQLException, ClassNotFoundException {
 //        Main menu = new Main();
 //        boolean exitcond = true;
 //        audit.writeToAudit("Opening app");
+//        jdbcAudit.writeToAudit("Opening app");
 //        while(exitcond){
 //            try{
 //                menu.printInteractiveMenu();
@@ -126,6 +167,7 @@ public class Main {
 //        }
 //        audit.writeToAudit("Closing app");
 //        audit.closeStream();
+//        jdbcAudit.writeToAudit("Closing app");
 //    }
 
     public void printInteractiveMenu(){
@@ -169,11 +211,13 @@ public class Main {
             options = new int[]{1,2,3,4,5,6};
             optionsText = new String[]{"Add computer to network", "List all computers", "Remove computer from network", "Edit a computer", "Back to networks", "Exit"};
             audit.writeToAudit("Added new network");
+            jdbcAudit.writeToAudit("Added new network");
             return;
         }
         if (text.equals("List all networks")){
             networkService.getAllNetworks();
             audit.writeToAudit("Listed all networks");
+            jdbcAudit.writeToAudit("Listed all networks");
             return;
         }
         if (text.equals("Add computer to network")){
@@ -182,6 +226,7 @@ public class Main {
             computerService.addComputer(comp);
             networkService.addComputer(currentNet, comp);
             audit.writeToAudit("Added a new computer to a network");
+            jdbcAudit.writeToAudit("Added a new computer to a network");
             return;
         }
         if (text.equals("List all computers")){
@@ -196,12 +241,14 @@ public class Main {
             }
 
             audit.writeToAudit("Listed all network computers");
+            jdbcAudit.writeToAudit("Listed all network computers");
             return;
         }
         if (text.equals("Remove computer from network")){
             if (networkService.getComputers(currentNet).size() == 0){
                 System.out.println("No computers yet");
                 audit.writeToAudit("Attempted to remove computer from network");
+                jdbcAudit.writeToAudit("Attempted to remove computer from network");
                 return;
             }
             System.out.println("Which one to remove? (0-indexed)");
@@ -210,6 +257,7 @@ public class Main {
             if (networkService.getComputers(currentNet).size() == 0 || todelete > Collections.max(networkService.getComputers(currentNet))){
                 System.out.println("Don't know that computer");
                 audit.writeToAudit("Attempted to remove computer from network");
+                jdbcAudit.writeToAudit("Attempted to remove computer from network");
                 return;
             }
 
@@ -220,11 +268,13 @@ public class Main {
             catch (Exception e){
                 System.out.println("Not found");
                 audit.writeToAudit("Attempted to remove computer from network");
+                jdbcAudit.writeToAudit("Attempted to remove computer from network");
             }
 
             if (!networkService.getComputers(currentNet).contains(currentComp.getID())){
                 currentComp = null;
                 audit.writeToAudit("Removed computer from network");
+                jdbcAudit.writeToAudit("Removed computer from network");
             }
 
             return;
@@ -241,6 +291,7 @@ public class Main {
             if (!networkService.getAllNetworks().contains(x)) {
                 System.out.println("Don't know that network");
                 audit.writeToAudit("Attempted to edit a network");
+                jdbcAudit.writeToAudit("Attempted to edit a network");
                 options = new int[]{1, 2, 3, 4};
                 optionsText = new String[]{"Add new network", "List all networks", "Edit a network", "Exit"};
             } else {
@@ -251,6 +302,7 @@ public class Main {
                 optionsText = new String[]{"Add computer to network", "List all computers", "Remove computer from network", "Edit a computer", "Back to networks", "Exit"};
 
                 audit.writeToAudit("Edited a network");
+                jdbcAudit.writeToAudit("Edited a network");
                 return;
             }
         }
@@ -262,6 +314,7 @@ public class Main {
                 System.out.println("Don't know that computer");
 
                 audit.writeToAudit("Attempted to edit a computer");
+                jdbcAudit.writeToAudit("Attempted to edit a computer");
                 options = new int[]{1, 2, 3, 4, 5, 6};
                 optionsText = new String[]{"Add computer to network", "List all computers", "Remove computer from network", "Edit a computer", "Back to networks", "Exit"};
 
@@ -271,10 +324,12 @@ public class Main {
             if (aux == null){
                 System.out.println("Don't know that computer");
                 audit.writeToAudit("Attempted to edit a computer");
+                jdbcAudit.writeToAudit("Attempted to edit a computer");
                 return;
             }
             else{
                 audit.writeToAudit("Editing a computer");
+                jdbcAudit.writeToAudit("Editing a computer");
             }
             currentComp = aux;
 
@@ -292,6 +347,7 @@ public class Main {
             options = new int[]{1, 2, 3};
             optionsText = new String[]{"Edit connections", "Edit its components", "Exit"};
             audit.writeToAudit("Chose hardware");
+            jdbcAudit.writeToAudit("Chose hardware");
             return;
         }
         if (text.equals("Edit its software")){
@@ -299,6 +355,7 @@ public class Main {
 
 
             audit.writeToAudit("Chose software");
+            jdbcAudit.writeToAudit("Chose software");
             return;
         }
         if (text.equals("Edit connections")){
@@ -307,6 +364,7 @@ public class Main {
             options = new int[]{1, 2, 3, 4, 5, 6};
             optionsText = new String[]{"Add connection", "Connect to an existing connection", "List its connections", "Remove connection", "Back to selected network" , "Exit"};
             audit.writeToAudit("Chose connections");
+            jdbcAudit.writeToAudit("Chose connections");
             return;
         }
         if (text.equals("Edit its components")){
@@ -314,6 +372,7 @@ public class Main {
             optionsText = new String[]{"Add component", "Connect to an existing component", "List its components", "Remove component", "Back to selected network" , "Exit"};
 
             audit.writeToAudit("Chose components");
+            jdbcAudit.writeToAudit("Chose components");
             return;
         }
         if (text.equals("Add connection")){
@@ -325,6 +384,7 @@ public class Main {
                 System.out.println("Bad hardware " + e);
             }
             audit.writeToAudit("Added a new connectable");
+            jdbcAudit.writeToAudit("Added a new connectable");
             return;
         }if (text.equals("Add component")){
             try{
@@ -335,6 +395,7 @@ public class Main {
                 System.out.println("Bad hardware " + e);
             }
             audit.writeToAudit("Added a new connectable");
+            jdbcAudit.writeToAudit("Added a new connectable");
             return;
         }if (text.equals("Connect to an existing connection")){
             var dinservice = hardwareService.getAllConnectionsNoHW();
@@ -355,6 +416,7 @@ public class Main {
             if (checkLen == 0){
                 System.out.println("No connectables added yet");
                 audit.writeToAudit("Attempted to connect to an existing connectable");
+                jdbcAudit.writeToAudit("Attempted to connect to an existing connectable");
                 return;
             }
 
@@ -374,10 +436,12 @@ public class Main {
                 if(poz >= printers.size() || poz < 0){
                     System.out.println("Don't know that printer");
                     audit.writeToAudit("Attempted to connect to an existing connectable");
+                    jdbcAudit.writeToAudit("Attempted to connect to an existing connectable");
                     return;
                 }
                 var deAdd = printers.get(poz);
                 audit.writeToAudit("Connected to an existing connectable");
+                jdbcAudit.writeToAudit("Connected to an existing connectable");
                 hardwareService.addConnection(currentHardw, deAdd);
             }
             else {
@@ -386,10 +450,12 @@ public class Main {
                 if(poz >= switches.size() || poz < 0){
                     System.out.println("Don't know that switch");
                     audit.writeToAudit("Attempted to connect to an existing connectable");
+                    jdbcAudit.writeToAudit("Attempted to connect to an existing connectable");
                     return;
                 }
                 var deAdd = switches.get(poz);
                 audit.writeToAudit("Connected to an existing connectable");
+                jdbcAudit.writeToAudit("Connected to an existing connectable");
                 hardwareService.addConnection(currentHardw, deAdd);
             }
 
@@ -414,6 +480,7 @@ public class Main {
             if (checkLen == 0){
                 System.out.println("No components added yet");
                 audit.writeToAudit("Attempted to add an existing component");
+                jdbcAudit.writeToAudit("Attempted to add an existing component");
                 return;
             }
 
@@ -433,10 +500,12 @@ public class Main {
                 if(poz >= graphicsCards.size() || poz < 0){
                     System.out.println("Don't know that graphics card");
                     audit.writeToAudit("Attempted to connect to an existing component");
+                    jdbcAudit.writeToAudit("Attempted to connect to an existing component");
                     return;
                 }
                 var deAdd = graphicsCards.get(poz);
                 audit.writeToAudit("Connected to an existing component");
+                jdbcAudit.writeToAudit("Connected to an existing component");
                 hardwareService.addComponent(currentHardw, deAdd);
             }
             else {
@@ -445,10 +514,12 @@ public class Main {
                 if(poz >= networkAdapters.size() || poz < 0){
                     System.out.println("Don't know that network adapter");
                     audit.writeToAudit("Attempted to connect to an existing component");
+                    jdbcAudit.writeToAudit("Attempted to connect to an existing component");
                     return;
                 }
                 var deAdd = networkAdapters.get(poz);
                 audit.writeToAudit("Connected to an existing component");
+                jdbcAudit.writeToAudit("Connected to an existing component");
                 hardwareService.addComponent(currentHardw, deAdd);
             }
 
@@ -461,6 +532,7 @@ public class Main {
                 System.out.println(el.getL() + " " + el.getR());
             }
             audit.writeToAudit("Listed current computer connections");
+            jdbcAudit.writeToAudit("Listed current computer connections");
             return;
         }
         if (text.equals("List its components")){
@@ -470,6 +542,7 @@ public class Main {
                 System.out.println(el.getL() + " " + el.getR());
             }
             audit.writeToAudit("Listed current computer components");
+            jdbcAudit.writeToAudit("Listed current computer components");
             return;
         }
         if (text.equals("Remove connection")){
@@ -489,10 +562,12 @@ public class Main {
                 hardwareService.removeConnection(currentHardw, poz);
 
                 audit.writeToAudit("Removed a connection");
+                jdbcAudit.writeToAudit("Removed a connection");
             }
             catch (Exception e){
                 System.out.println("Don't know that connection");
                 audit.writeToAudit("Attempted to remove connection");
+                jdbcAudit.writeToAudit("Attempted to remove connection");
             }
             return;
         }
@@ -513,10 +588,12 @@ public class Main {
                 hardwareService.removeComponent(currentHardw, poz);
 
                 audit.writeToAudit("Removed a connection");
+                jdbcAudit.writeToAudit("Removed a connection");
             }
             catch (Exception e){
                 System.out.println("Don't know that component");
                 audit.writeToAudit("Attempted to remove component");
+                jdbcAudit.writeToAudit("Attempted to remove component");
             }
             return;
         }

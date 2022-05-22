@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PrinterJDBCRepository {
-    private ConnectionManager connectionManager;
+    private final ConnectionManager connectionManager;
 
     public PrinterJDBCRepository(ConnectionManager connectionManager) {
         this.connectionManager = connectionManager;
