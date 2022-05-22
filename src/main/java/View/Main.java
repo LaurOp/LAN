@@ -35,7 +35,7 @@ import java.util.*;
 
 public class Main {
 
-    private Scanner s = new Scanner(System.in);
+    private static final Scanner s = new Scanner(System.in);
 
     private final ConnectableService connectableService = new ConnectableService();
     private final NetworkService networkService = new NetworkService();
@@ -51,6 +51,8 @@ public class Main {
     static ConnectionManager man;
     private final PrinterJDBCRepository printerJDBCRepository = new PrinterJDBCRepository(man);
     private final SwitchJDBCRepository switchJDBCRepository = new SwitchJDBCRepository(man);
+    private final GraphicsCardJDBCRepository graphicsCardJDBCRepository = new GraphicsCardJDBCRepository(man);
+    private final NAdapterJDBCRepository nAdapterJDBCRepository = new NAdapterJDBCRepository(man);
 
     static {
         try {
@@ -102,93 +104,36 @@ public class Main {
         reader.readNetworkAdapters("src/main/resources/Seeders/networkadapterSeed.txt");
     }
 
-//    // PROBA PT JDBC
-//    public static void main(String[] args) throws SQLException {
-//// Printer:
-////        PrinterJDBCRepository printerJDBCRepository = new PrinterJDBCRepository(man);
-////        printerJDBCRepository.createNewPrinter("1.1.1.1", "brand1", "model1", 24);
-////        var rez = printerJDBCRepository.getPrinterByIP("1.1.1.1");
-////        System.out.println(rez);
-////        printerJDBCRepository.updatePrinter(rez, new PrinterDTO("2.2.2.2", "brand2", "model2", 26));
-////
-////        rez = printerJDBCRepository.getPrinterByIP("1.1.1.1");
-////        System.out.println(rez);
-////
-////        printerJDBCRepository.deletePrinter(rez);
-////
-////        var listrez = printerJDBCRepository.findAllPrinters();
-//
-//// Switch:
-////        SwitchJDBCRepository switchJDBCRepository = new SwitchJDBCRepository(man);
-////        switchJDBCRepository.createNewSwitch("1.1.1.1","brand1", true);
-////
-////        var rez = switchJDBCRepository.findAllSwitches();
-////        for(var s : rez){
-////            System.out.println(s);
-////        }
-////        var rez2 = switchJDBCRepository.getSwitchByIP("1.1.1.1");
-////        System.out.println(rez2);
-////
-////        switchJDBCRepository.updateSwitch(rez2, new SwitchDTO("2.2.2.2","brand2",true));
-////        rez2 = switchJDBCRepository.getSwitchByIP("21.1.1.1");
-////        switchJDBCRepository.deleteSwitch(rez2);
-//
-//
-////GraphicsCard:
-////        GraphicsCardJDBCRepository graphicsCardJDBCRepository = new GraphicsCardJDBCRepository(man);
-////        graphicsCardJDBCRepository.createNewGraphics(256, false, 2000);
-////
-////        var rez = graphicsCardJDBCRepository.findAllGraphics();
-////        for (var g : rez){
-////            System.out.println(g);
-////        }
-////
-////        var rez2 = graphicsCardJDBCRepository.getGraphicsByName("Graphics256");
-////
-////        graphicsCardJDBCRepository.updateGraphics(rez2.get(0), new GraphicsCardDTO(500, true, 2999));
-////        rez2 = graphicsCardJDBCRepository.getGraphicsByName("Graphics500");
-////        graphicsCardJDBCRepository.deleteGraphics(rez2.get(0));
-//
-//
-////NetworkAdapter:
-////
-////        NAdapterJDBCRepository nAdapterJDBCRepository = new NAdapterJDBCRepository(man);
-////        nAdapterJDBCRepository.createNewAdapter(3, 200);
-////
-////        var rez = nAdapterJDBCRepository.findAllAdapters();
-////        for(var n : rez){
-////            System.out.println(n);
-////        }
-////
-////        nAdapterJDBCRepository.updateAdaptersPorts(rez.get(0), 8);
-////        nAdapterJDBCRepository.updateAdaptersPrice(rez.get(1), 150);
-////
-////        nAdapterJDBCRepository.deleteAdaptersByPrice(new NAdapterDTO(0, 1000));
-////        nAdapterJDBCRepository.deleteAdaptersByPorts(new NAdapterDTO(8, 50));
-////        nAdapterJDBCRepository.deleteAdaptersByPorts(new NAdapterDTO(2, 50));
-//
-//    }
 
-//    public static void main(String[] args) throws IOException, SQLException, ClassNotFoundException {
-//        Main menu = new Main();
-//        boolean exitcond = true;
-//        audit.writeToAudit("Opening app");
-//        jdbcAudit.writeToAudit("Opening app");
-//        while(exitcond){
-//            try{
-//                menu.printInteractiveMenu();
-//                int option = menu.getOption();
-//                menu.pick(optionsText[option-1]);
-//            }
-//            catch (Exception e){
-//                System.out.println(e);
-//                exitcond = false;
-//            }
-//        }
-//        audit.writeToAudit("Closing app");
-//        audit.closeStream();
-//        jdbcAudit.writeToAudit("Closing app");
-//    }
+    public static void main(String[] args) throws IOException, SQLException, ClassNotFoundException {
+        System.out.println("1)Start Application\n2)JDBC - interact with the database\n");
+        int option2 = Integer.parseInt(Main.s.nextLine());
+
+        if (option2 == 1){
+            Main menu = new Main();
+            boolean exitcond = true;
+            audit.writeToAudit("Opening app");
+            jdbcAudit.writeToAudit("Opening app");
+            while(exitcond){
+                try{
+                    menu.printInteractiveMenu();
+                    int option = menu.getOption();
+                    menu.pick(optionsText[option-1]);
+                }
+                catch (Exception e){
+                    System.out.println(e);
+                    exitcond = false;
+                }
+            }
+            audit.writeToAudit("Closing app");
+            audit.closeStream();
+            jdbcAudit.writeToAudit("Closing app");
+        }
+        else{
+
+        }
+
+    }
 
     public void printInteractiveMenu(){
         System.out.println("Choose between:");

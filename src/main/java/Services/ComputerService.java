@@ -8,9 +8,9 @@ import Repositories.NO_JDBC.ComputerRepository;
 import java.util.ArrayList;
 
 public class ComputerService {
-    private ComputerRepository computerRepository = new ComputerRepository();
+    private final ComputerRepository computerRepository = new ComputerRepository();
 
-    private HardwareService hardwareService = new HardwareService();
+    private final HardwareService hardwareService = new HardwareService();
 
 
     public void addComputer(Computer comp){

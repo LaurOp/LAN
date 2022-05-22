@@ -10,7 +10,7 @@ public class Printer implements Connectable {
 
     private final int nrPorts = 2;
     private List<String> connectedTo;
-    private final String IP;
+    private String IP;
     private String brand;
     private String model;
     private int pagesPerMinute;
@@ -49,6 +49,33 @@ public class Printer implements Connectable {
         this.pagesPerMinute = 10;
     }
 
+    public Printer(String IP, String brand, String model, int pagesPerMinute) {
+        this.IP = IP;
+        this.brand = brand;
+        this.model = model;
+        this.pagesPerMinute = pagesPerMinute;
+    }
+
+    public void setIP(String IP) {
+        this.IP = IP;
+    }
+
+    public int getNrPorts() {
+        return nrPorts;
+    }
+
+    public String getBrand() {
+        return brand;
+    }
+
+    public String getModel() {
+        return model;
+    }
+
+    public int getPagesPerMinute() {
+        return pagesPerMinute;
+    }
+
     @Override
     public List<Integer> getFreePorts() {   //hardcoded since I have constant nr of ports
         return service.getFreePorts(this);
@@ -80,5 +107,7 @@ public class Printer implements Connectable {
     public void setPagesPerMinute(int pagesPerMinute) {
         this.pagesPerMinute = pagesPerMinute;
     }
+
+
 
 }
