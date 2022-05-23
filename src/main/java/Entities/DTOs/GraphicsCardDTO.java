@@ -13,11 +13,11 @@ public class GraphicsCardDTO {
         this.name = "";
     }
 
-    public GraphicsCardDTO(int videoMemory, boolean forMining, int price) {
+    public GraphicsCardDTO(String name, int videoMemory, boolean forMining, int price) {
         this.videoMemory = videoMemory;
         this.forMining = forMining;
         this.price = price;
-        this.name = "Graphics" + Integer.toString(videoMemory);
+        this.name = name;
     }
 
     public int getVideoMemory() {

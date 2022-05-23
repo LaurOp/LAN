@@ -19,12 +19,12 @@ public class GraphicsCardJDBCRepository {
     }
 
     //C
-    public void createNewGraphics(int vid, boolean formine, int pr) throws SQLException {
+    public void createNewGraphics(String nam, int vid, boolean formine, int pr) throws SQLException {
         String sql = "INSERT INTO graphics (name, video, mine, price) VALUES (?, ?, ?, ?)";
 
         PreparedStatement statement = connectionManager.prepareStatement(sql);
 
-        statement.setString(1, "Graphics" + vid);
+        statement.setString(1, nam);
         statement.setString(2, Integer.toString(vid));
         if (formine){
             statement.setString(3, "1");
@@ -45,27 +45,21 @@ public class GraphicsCardJDBCRepository {
     //R
     public List<GraphicsCardDTO> findAllGraphics() throws SQLException {
         PreparedStatement stmt = connectionManager.prepareStatement("Select * from graphics");
-        ResultSet rs = stmt.executeQuery();
-        List<GraphicsCardDTO> result = new ArrayList<>();
-        while (rs.next()) {
-            GraphicsCardDTO g = new GraphicsCardDTO();
-            g.setPrice(rs.getInt("price"));
-            g.setForMining(rs.getBoolean("mine"));
-            g.setVideoMemory(rs.getInt("video"));
-            g.setName("Graphics" + g.getVideoMemory());
-
-            result.add(g);
-        }
-        return result;
+        return getGraphicsCardDTOS(stmt);
     }
 
     public List<GraphicsCardDTO> getGraphicsByName(String name) throws SQLException {
         PreparedStatement stmt = connectionManager.prepareStatement("Select * from graphics WHERE name=?");
         stmt.setString(1,name);
+        return getGraphicsCardDTOS(stmt);
+    }
+
+    public List<GraphicsCardDTO> getGraphicsCardDTOS(PreparedStatement stmt) throws SQLException {
         ResultSet rs = stmt.executeQuery();
         List<GraphicsCardDTO> result = new ArrayList<>();
         while (rs.next()) {
             GraphicsCardDTO g = new GraphicsCardDTO();
+            g.setName(rs.getString("name"));
             g.setPrice(rs.getInt("price"));
             g.setForMining(rs.getBoolean("mine"));
             g.setVideoMemory(rs.getInt("video"));

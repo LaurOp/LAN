@@ -27,5 +27,11 @@ public class NetworkAdapter extends PcComponent {
         nrOfPorts = ports;
     }
 
-
+    @Override
+    public String toString() {
+        return "NetworkAdapter{" +
+                "nrOfPorts=" + nrOfPorts +
+                ", price=" + price +
+                '}';
+    }
 }

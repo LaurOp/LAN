@@ -120,7 +120,7 @@ public class AutomatedTests {
 
         //GraphicsCard:
         GraphicsCardJDBCRepository graphicsCardJDBCRepository = new GraphicsCardJDBCRepository(man);
-        graphicsCardJDBCRepository.createNewGraphics(256, false, 2000);
+        graphicsCardJDBCRepository.createNewGraphics("Proba", 256, false, 2000);
 
         var rez4 = graphicsCardJDBCRepository.findAllGraphics();
         for (var g : rez4){
@@ -129,7 +129,7 @@ public class AutomatedTests {
 
         var rez5 = graphicsCardJDBCRepository.getGraphicsByName("Graphics256");
 
-        graphicsCardJDBCRepository.updateGraphics(rez5.get(0), new GraphicsCardDTO(500, true, 2999));
+        graphicsCardJDBCRepository.updateGraphics(rez5.get(0), new GraphicsCardDTO("GraphicsProba", 500, true, 2999));
         rez5 = graphicsCardJDBCRepository.getGraphicsByName("Graphics500");
         graphicsCardJDBCRepository.deleteGraphics(rez5.get(0));
 

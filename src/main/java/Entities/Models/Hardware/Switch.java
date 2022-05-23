@@ -9,7 +9,7 @@ import java.util.Random;
 public class Switch implements Connectable {
 
     private final int nrPorts = 24;
-    private final String IP;
+    private  String IP;
     private String brand;
     private boolean gigabitEthernet;
     private List<String> connectedTo;
@@ -45,6 +45,37 @@ public class Switch implements Connectable {
         this.connectedTo = new ArrayList<>();
     }
 
+    public Switch(String IP, String brand, boolean gigabitEthernet) {
+        this.IP = IP;
+        this.brand = brand;
+        this.gigabitEthernet = gigabitEthernet;
+    }
+
+    public int getNrPorts() {
+        return nrPorts;
+    }
+
+    public String getBrand() {
+        return brand;
+    }
+
+    public boolean isGigabitEthernet() {
+        return gigabitEthernet;
+    }
+
+
+    public void setIP(String IP) {
+        this.IP = IP;
+    }
+
+    public void setBrand(String brand) {
+        this.brand = brand;
+    }
+
+    public void setGigabitEthernet(boolean gigabitEthernet) {
+        this.gigabitEthernet = gigabitEthernet;
+    }
+
     @Override
     public List<Integer> getFreePorts() {   //hardcoded since I have constant nr of ports
         return service.getFreePorts(this);
@@ -65,4 +96,14 @@ public class Switch implements Connectable {
         return service.ping(this, ip);
     }
 
+    @Override
+    public String toString() {
+        return "Switch{" +
+                "IP='" + IP + '\'' +
+                ", brand='" + brand + '\'' +
+                ", gigabitEthernet=" + gigabitEthernet +
+                '}';
+    }
 }
+
+
